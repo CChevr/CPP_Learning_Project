@@ -36,6 +36,10 @@ void toggle_fullscreen()
     fullscreen = !fullscreen;
 }
 
+void pause() {
+    paused = !paused;
+}
+
 void change_zoom(const float factor)
 {
     zoom *= factor;
@@ -79,10 +83,12 @@ void display(void)
 }
 
 void timer(const int step)
-{
-    for (auto& item : move_queue)
-    {
-        item->move();
+{   
+    if(!paused){
+        for (auto& item : move_queue)
+        {
+            item->move();
+        }
     }
     glutPostRedisplay();
     glutTimerFunc(1000u / ticks_per_sec, timer, step + 1);
