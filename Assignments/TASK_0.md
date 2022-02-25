@@ -78,15 +78,113 @@ Point d'entré du programme
 représente la piste d'atterrisage, sa longueur et sa position
 ```
 
--terminal
+- terminal
 ```
 
 ```
 
+- tower
+```
+tower permet d'orchestrer lese actions des aviosn vis à vis de l'aéroport
+```
+
+- tower_sim
+```
+Permet de gérer les iteractions avec l'utilisateur et de gérer la création des avions
+```
+
+- waypoint
+```
+définit l'état d'un avion: dans les air, au sol au terminal.
+```
 
 
 Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonctions-membre publiques et expliquez précisément à quoi elles servent.
 Réalisez ensuite un schéma présentant comment ces différentes classes intéragissent ensemble.
+
+- Tower
+
+```cpp
+WaypointQueue get_instructions(Aircraft& aircraft);
+```
+Donne à l'avion aircraft passé en paramètre les instructions pour le déplacement de l'avion. S'il à le droit d'attérir, la direction qu'il doit emprunter pour se rapprocher de l'aéroport le plus proche.
+
+```cpp
+void arrived_at_terminal(const Aircraft& aircraft);
+```
+
+
+
+- Aircraft
+
+```cpp
+const std::string& get_flight_num()
+```
+Retourne l'identifiant de l'avion
+
+```cpp
+float distance_to(const Point3D& p)
+```
+Donne la distance entre l'avion et le point p
+
+```cpp
+void display()
+```
+Affiche l'avion
+
+```cpp
+void move()
+```
+Fait bouger l'avion
+
+
+- Airport
+```cpp
+Tower& get_tower()
+```
+retourne la Tower liée à l'aéroport
+
+```cpp
+void display()
+```
+Affiche l'aéroport
+
+```cpp
+void move()
+```
+Faire avancer le cycle du dépôt des terminaux
+
+- Terminal
+```cpp
+bool in_use()
+```
+précise si un avion est en cours de dépot au terminal
+
+```cpp
+bool is_servicing()
+```
+Dit si un avion est en train de servicing
+
+```cpp
+void assign_craft
+```
+Affecte un avion au terminal
+
+```cpp
+void start_service(const Aircraft& aircraft)
+```
+Initialise le dépot de l'avion au terminal
+
+```cpp
+void finish_service()
+```
+Si le dépot est terminé, désaffecte l'avion du terminal
+
+```cpp
+void move()
+```
+Fait avancé d'un cycle le dépot
+
 
 Quelles classes et fonctions sont impliquées dans la génération du chemin d'un avion ?
 Quel conteneur de la librairie standard a été choisi pour représenter le chemin ?
