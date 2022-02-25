@@ -9,17 +9,81 @@ Sur quelle touche faut-il appuyer pour ajouter un avion ?
 Comment faire pour quitter le programme ?
 A quoi sert la touche 'F' ?
 
+- Pour ajouter un avion il faut appuyer sur la touche 'c'.
+- Pour quitter le programme il faut appuyer sur la touche 'q'.
+- La touche F permet de passer en plein écran.
+
 Ajoutez un avion à la simulation et attendez.
 Que est le comportement de l'avion ?
 Quelles informations s'affichent dans la console ?
 
+- Lorsqu'un avion apparaît à l'écran, il tourne autours de l'aéroport jusqu'à pouvoir atterrir. Une fois au sol, il se "gare", puis repart.
+
+Un avion alterne entre ces quatres états:
+
+```Bash
+BA8336 is now landing...
+now servicing BA8336...
+done servicing BA8336
+BA8336 lift off
+```
+
 Ajoutez maintenant quatre avions d'un coup dans la simulation.
 Que fait chacun des avions ?
+
+- les avions tournent autours de la piste pour attendre qu'elle soit libre. Une fois qu'elle l'est, un des avions atterrit. Une fois qu'il à quitté la piste, un autre avion atterit.
 
 ## B- Analyse du code
 
 Listez les classes du programme à la racine du dossier src/.
 Pour chacune d'entre elle, expliquez ce qu'elle représente et son rôle dans le programme.
+
+- aircraft
+```
+Cette classe permet de représenter un avion. Elle regroupe tous ses attributs, son états et ses 'fonctionnalitées'.
+```
+
+- aicraft_types
+```
+Cette classe permet de définir les caractéristiques propres aux types d'avions, tels que se vitesse max, son accélération, son apparence.
+```
+
+- airport
+```
+Cette calsse permet de caractériser un terminal: sa position, son apparence. 
+```
+
+- airport_type
+```
+Comme pour les avions, il peut exister plusieurs types d'aéroport. Chaque type d'aéroport possède des caractéristiques qui lui sont propres comme l'emplacement de stockage, et l'emplacement des pistes de décollage.
+```
+
+- config
+```
+recense les paramètres de base du programme, exemple la tailel de la fenêtre, le zoom....
+```
+
+- geometry
+```
+contient toutes les formules mathématiques permetant de faire les calculs du programme
+```
+
+- main
+```
+Point d'entré du programme
+```
+
+- runway
+```
+représente la piste d'atterrisage, sa longueur et sa position
+```
+
+-terminal
+```
+
+```
+
+
 
 Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonctions-membre publiques et expliquez précisément à quoi elles servent.
 Réalisez ensuite un schéma présentant comment ces différentes classes intéragissent ensemble.

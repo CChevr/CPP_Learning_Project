@@ -45,6 +45,13 @@ void change_zoom(const float factor)
     handle_error("Zoom");
 }
 
+void change_tps(const int value) {
+    if(ticks_per_sec + value > 0) {
+        ticks_per_sec += value;
+    }
+    std::cout << "TPS changed to : " << ticks_per_sec << std::endl;
+}
+
 void reshape_window(int w, int h)
 {
     glViewport(0, 0, w, h);
