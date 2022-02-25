@@ -196,6 +196,19 @@ Expliquez les intérêts de ce choix.
 Le Concorde est censé pouvoir voler plus vite que les autres avions.
 Modifiez le programme pour tenir compte de cela.
 
+- Ces caractéristiques de l'avions sont définis et gérés par la classe `aircraft_types.hpp`.
+Par exemple 
+```cpp
+aircraft_types[0] = new AircraftType { .02f, .05f, .02f, MediaPath { "l1011_48px.png" } }
+```
+Permet de définir un avion. comme expliqué dans le contructeur des avions on peut voir que :
+```cpp
+AircraftType(const float max_ground_speed_, const float max_air_speed_, const float max_accel_,
+                 const MediaPath& sprite, const size_t num_tiles = NUM_AIRCRAFT_TILES) :
+```
+Le premier paramètre défini la vitesse maximale de l'avion au sol
+
+
 2) Identifiez quelle variable contrôle le framerate de la simulation.
 Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
 Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
