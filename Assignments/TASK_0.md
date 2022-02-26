@@ -93,9 +93,9 @@ tower permet d'orchestrer lese actions des aviosn vis à vis de l'aéroport
 Permet de gérer les iteractions avec l'utilisateur et de gérer la création des avions
 ```
 
-- waypoint
+- `waypoint`
 ```
-définit l'état d'un avion: dans les air, au sol au terminal.
+définit l'état d'un avion: dans les air, au sol au terminal, ainsi que sa position à l'aide d'un Point3D point à trois coordonnées.
 ```
 
 
@@ -189,6 +189,12 @@ Fait avancé d'un cycle le dépot
 Quelles classes et fonctions sont impliquées dans la génération du chemin d'un avion ?
 Quel conteneur de la librairie standard a été choisi pour représenter le chemin ?
 Expliquez les intérêts de ce choix.
+
+Un chemin est une `deque` de `waypoint`.
+L'intérêt du `deque` est ainsi de créer une file. En effet, un avion doit suivre les points en fonction de leur ordre d'ajoute (FIFO).
+La classe waypoint permet ainsi de définir les coordonnées où doit passer l'avion, en plus de préciser si le point est dans les airs, au sol, ou bien au temrinal.
+
+Aircraft possède une méthode `add_waypoint` permettant d'ajouter un `waypoint` à son itinéraire
 
 ## C- Bidouillons !
 
