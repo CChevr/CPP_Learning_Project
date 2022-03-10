@@ -9,6 +9,7 @@
 
 #include <string>
 #include <string_view>
+#include <algorithm>
 
 class Aircraft : public GL::Displayable, public GL::DynamicObject
 {
@@ -55,6 +56,11 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
+    }
+
+    ~Aircraft() {
+        auto it = std::find(GL::display_queue.begin(), GL::display_queue.end(), this);
+        GL::display_queue.erase(it);
     }
 
     const std::string& get_flight_num() const { return flight_number; }
