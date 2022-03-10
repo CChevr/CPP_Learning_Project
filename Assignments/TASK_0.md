@@ -256,6 +256,9 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 
 3. Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
 
+- On peut remarquer que les avions restent dans le terminal un certan nombre de frame/cycle. Lorsque l'on regarde dans `terminal.hpp`, on remarque que la fonction `move()` ne permet pas de faire avancer le terminal, mais plutôt le cycle de débarquement de l'avion concerné.
+  La valeur de ces cycles est stocké dans la variable `SERVICE_CYCLES` dans le fichier `config.hpp` et vaut par défaut 20u.
+
 4. Lorsqu'un avion a décollé, il réattérit peu de temps après.
    Faites en sorte qu'à la place, il soit retiré du programme.\
    Indices :\
