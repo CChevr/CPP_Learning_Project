@@ -7,9 +7,9 @@
 #include "tower.hpp"
 #include "waypoint.hpp"
 
+#include <algorithm>
 #include <string>
 #include <string_view>
-#include <algorithm>
 
 class Aircraft : public GL::Displayable, public GL::DynamicObject
 {
@@ -56,9 +56,11 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
+        GL::display_queue.emplace_back(this);
     }
 
-    ~Aircraft() {
+    ~Aircraft()
+    {
         auto it = std::find(GL::display_queue.begin(), GL::display_queue.end(), this);
         GL::display_queue.erase(it);
     }

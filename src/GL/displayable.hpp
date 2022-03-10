@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 namespace GL {
 
@@ -15,14 +15,15 @@ protected:
     float z = 0;
 
 public:
-    Displayable(const float z_) : z { z_ } {
+    Displayable(const float z_) : z { z_ } {}
 
-    }
-
-    virtual ~Displayable() {
+    virtual ~Displayable()
+    {
+        /*
         std::cout << "number of elements : " << display_queue.size() << std::endl;
         auto it = std::find(display_queue.begin(), display_queue.end(), this);
         display_queue.erase(it);
+        */
     }
 
     virtual void display() const = 0;
