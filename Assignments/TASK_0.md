@@ -267,7 +267,11 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
    A quel endroit de la callstack pourriez-vous le faire à la place ?\
    Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
 
-- On sait qu'un avion à terminé de se "servicing" dans la fonction `terminal::finish_servicing`.
+- tower::get_instruction() 2e else
+- Il doit être supprimé dans la fonction timer de opengl_interface
+- la fonction get_instruction renvoie une deque vide si l'avion doit être supprimé.
+- la fonction move de l'avion renvoie false si l'avion doit être supprimé sinon true
+- la fonction timer supprime tous les objets qui renvoient false durant suite à l'appel de move().
 
 5. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
    Il faut également penser à le supprimer de cette liste avant de le détruire.
