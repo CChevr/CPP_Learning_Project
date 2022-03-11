@@ -293,6 +293,7 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 
 2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
+   
 
 ## E- Bonus
 
