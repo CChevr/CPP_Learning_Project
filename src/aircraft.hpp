@@ -56,7 +56,6 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
-        GL::display_queue.emplace_back(this);
     }
 
     const std::string& get_flight_num() const { return flight_number; }

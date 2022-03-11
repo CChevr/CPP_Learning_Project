@@ -24,7 +24,7 @@ WaypointQueue Tower::get_instructions(Aircraft& aircraft)
             const auto vp = airport.reserve_terminal(aircraft);
             if (!vp.first.empty())
             {
-                reserved_terminals.emplace_back(&aircraft, vp.second);
+                reserved_terminals.emplace(&aircraft, vp.second);
                 return vp.first;
             }
             else
