@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 namespace GL {
 class Displayable;

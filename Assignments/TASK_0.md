@@ -278,6 +278,9 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
    Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.
    Pourquoi n'est-il pas spécialement pertinent d'en faire de même pour `DynamicObject` ?
 
+- Le mieux pour cela est d'ajouter toutes instances de `Displayable` dans `display_queue` lors de leur création (dans le constructeur de displayable entre les accolades).
+- De même, pour les détruire on peut passer par le descturcteur des `Displayable`.
+
 6. La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle.
    Cette information est actuellement enregistrée dans un `std::vector<std::pair<const Aircraft*, size_t>>` (size_t représentant l'indice du terminal).
    Cela fait que la recherche du terminal associé à un avion est réalisée en temps linéaire, par rapport au nombre total de terminaux.

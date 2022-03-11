@@ -7,9 +7,9 @@
 #include "tower.hpp"
 #include "waypoint.hpp"
 
+#include <algorithm>
 #include <string>
 #include <string_view>
-#include <algorithm>
 
 class Aircraft : public GL::Displayable, public GL::DynamicObject
 {
@@ -56,6 +56,7 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
+        GL::display_queue.emplace_back(this);
     }
 
     const std::string& get_flight_num() const { return flight_number; }

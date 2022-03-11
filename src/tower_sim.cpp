@@ -58,7 +58,7 @@ void TowerSimulation::create_keystrokes() const
     GL::keystrokes.emplace('f', []() { GL::toggle_fullscreen(); });
     GL::keystrokes.emplace('&', []() { GL::change_tps(-1); });
     GL::keystrokes.emplace('"', []() { GL::change_tps(1); });
-    GL::keystrokes.emplace('p', []() { GL::pause(); });   // TODO Pause
+    GL::keystrokes.emplace('p', []() { GL::pause(); }); // TODO Pause
 }
 
 void TowerSimulation::display_help() const
