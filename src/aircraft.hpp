@@ -58,11 +58,6 @@ public:
         speed.cap_length(max_speed());
     }
 
-    ~Aircraft() {
-        auto it = std::find(GL::display_queue.begin(), GL::display_queue.end(), this);
-        GL::display_queue.erase(it);
-    }
-
     const std::string& get_flight_num() const { return flight_number; }
     float distance_to(const Point3D& p) const { return pos.distance_to(p); }
 
