@@ -280,6 +280,8 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 
 - Le mieux pour cela est d'ajouter toutes instances de `Displayable` dans `display_queue` lors de leur création (dans le constructeur de displayable entre les accolades).
 - De même, pour les détruire on peut passer par le descturcteur des `Displayable`.
+- Comme la suppression s'effetue dans la fonction `opengl_interface::timer`, qui iter sur la move_queue. Sil on supprime l'élément de la move_queue dans le destructeur des
+`dynamic_object`, alors cela invalidera l'iterator utilisé par `opengl_interface::timer`. Cela provoquera alors une Erreur de segmentation.
 
 6. La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle.
    Cette information est actuellement enregistrée dans un `std::vector<std::pair<const Aircraft*, size_t>>` (size_t représentant l'indice du terminal).
@@ -290,10 +292,11 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 ## D- Théorie
 
 1. Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
+- parce que `Tower` est friend avec Airport, bien que la fonction soit `reserve_terminal` soit private
 
-2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference ?
+2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une const réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
-   
+- 
 
 ## E- Bonus
 
