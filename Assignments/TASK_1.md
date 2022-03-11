@@ -34,6 +34,11 @@ Répondez aux questions suivantes :
 3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces structures ?
 4. Pourquoi n'est-il pas très judicieux d'essayer d'appliquer la même chose pour votre `AircraftManager` ?
 
+1. Actuellement il s'agit de la classe GL/opengl_interface::timer() qui est chargé de ça.
+2. display_queue et move_queue
+3. Pour le supprimer de la display_queue il faut passer par le destructeur de Displayable, et pour le supprimer de move_queue il faut passer par le destructeur de dynamic_object.
+4. 
+
 Pour simplifier le problème, vous allez déplacer l'ownership des avions dans la classe `AircraftManager`.
 Vous allez également faire en sorte que ce soit cette classe qui s'occupe de déplacer les avions, et non plus la fonction `timer`.
 
