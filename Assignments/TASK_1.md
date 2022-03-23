@@ -47,6 +47,8 @@ Vous allez également faire en sorte que ce soit cette classe qui s'occupe de d�
 Ajoutez un attribut `aircrafts` dans le gestionnaire d'avions.
 Choisissez un type qui met bien en avant le fait que `AircraftManager` est propriétaire des avions.
 
+- Pour montrer que AircraftManager est bien propriétaire des aircraft, on peut définir un vector de unique_ptr de aircraft.
+
 Ajoutez un nouvel attribut `aircraft_manager` dans la classe `TowerSimulation`.
 
 Modifiez ensuite le code afin que `timer` passe forcément par le gestionnaire d'avions pour déplacer les avions.
