@@ -27,6 +27,7 @@ add_executable(tower
 	src/tower.cpp
 	src/tower.hpp
 	src/waypoint.hpp
+	src/aircraft_manager.hpp
 	src/main.cpp
 )
 
