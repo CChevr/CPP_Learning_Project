@@ -7,7 +7,7 @@
 
 class AircraftManager {
     public:
-    void add(unique_ptr<Aircraft> aircraft) {
+    void add(std::unique_ptr<Aircraft> aircraft) {
         aircrafts.emplace_back(std::move(aircraft));
         std::cout << "Ajouté!" << std::endl;
     }
