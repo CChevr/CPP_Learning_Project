@@ -36,7 +36,8 @@ void toggle_fullscreen()
     fullscreen = !fullscreen;
 }
 
-void pause() {
+void pause()
+{
     paused = !paused;
 }
 
@@ -49,8 +50,10 @@ void change_zoom(const float factor)
     handle_error("Zoom");
 }
 
-void change_tps(const int value) {
-    if(ticks_per_sec + value > 0) {
+void change_tps(const int value)
+{
+    if (ticks_per_sec + value > 0)
+    {
         ticks_per_sec += value;
     }
     std::cout << "TPS changed to : " << ticks_per_sec << std::endl;
@@ -83,17 +86,21 @@ void display(void)
 }
 
 void timer(const int step)
-{   
-    if(!paused){
-        for (auto it = move_queue.begin(); it != move_queue.end(); ) {
+{
+    if (!paused)
+    {
+        for (auto it = move_queue.begin(); it != move_queue.end();)
+        {
             auto item = *it;
-            if (!item->move()) {
+            if (!item->move())
+            {
                 delete item;
                 it = move_queue.erase(it);
-            } else {
+            }
+            else
+            {
                 ++it;
             }
-            
         }
     }
     glutPostRedisplay();
