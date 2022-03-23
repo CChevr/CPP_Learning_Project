@@ -51,6 +51,8 @@ Choisissez un type qui met bien en avant le fait que `AircraftManager` est propr
 
 Ajoutez un nouvel attribut `aircraft_manager` dans la classe `TowerSimulation`.
 
+- ajout de l'attibut privé `AircraftManager aircraftManager`.
+
 Modifiez ensuite le code afin que `timer` passe forcément par le gestionnaire d'avions pour déplacer les avions.
 Faites le nécessaire pour que le gestionnaire supprime les avions après qu'ils aient décollé.
 
