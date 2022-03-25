@@ -38,6 +38,14 @@ public:
         aircraft_types[2] = new AircraftType { .02f, .05f, .02f, MediaPath { "concorde_af.png" } };
     }
 
+    const std::string airlineName(size_t index) const
+    {
+        if (index < airlines->length())
+        {
+            return airlines[index];
+        }
+    }
+
 private:
     const size_t NUM_AIRCRAFT_TYPES = 3;
     const std::string airlines[8]   = { "AF", "LH", "EY", "DL", "KL", "BA", "AY", "EY" };
