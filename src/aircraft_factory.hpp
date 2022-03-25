@@ -44,6 +44,7 @@ public:
         {
             return airlines[index];
         }
+        return "";
     }
 
 private:

@@ -39,6 +39,16 @@ public:
         return true;
     }
 
+    void infoAirlines(const std::string& airline) const
+    {
+        auto count = std::count_if(_aircrafts.begin(), _aircrafts.end(),
+                                   [airline](std::unique_ptr<Aircraft>& aircraft) {
+                                       return (aircraft->get_flight_num()).find(airline) != std::string::npos;
+                                   });
+
+        std::cout << airline << " : " << count << std::endl;
+    }
+
 private:
     std::vector<std::unique_ptr<Aircraft>> _aircrafts;
     std::set<std::string> _flyNums;
