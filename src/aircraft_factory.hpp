@@ -26,7 +26,6 @@ public:
 
     std::unique_ptr<Aircraft> create_random_aircraft(Airport* airport)
     {
-        std::cout << "JE suis au moins passé ici" << std::endl;
         return create_aircraft(*(aircraft_types[rand() % NUM_AIRCRAFT_TYPES]), airport);
     }
 
