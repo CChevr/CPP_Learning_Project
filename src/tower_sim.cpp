@@ -46,9 +46,30 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace('+', []() { GL::change_zoom(0.95f); });
     GL::keystrokes.emplace('-', []() { GL::change_zoom(1.05f); });
     GL::keystrokes.emplace('f', []() { GL::toggle_fullscreen(); });
-    GL::keystrokes.emplace('&', []() { GL::change_tps(-1); });
-    GL::keystrokes.emplace('"', []() { GL::change_tps(1); });
+    GL::keystrokes.emplace('a', []() { GL::change_tps(-1); });
+    GL::keystrokes.emplace('e', []() { GL::change_tps(1); });
     GL::keystrokes.emplace('p', []() { GL::pause(); });
+    GL::keystrokes.emplace(
+        '1', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(0)); });
+    GL::keystrokes.emplace(
+        '2', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(1)); });
+    GL::keystrokes.emplace(
+        '3', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(2)); });
+    GL::keystrokes.emplace(
+        '4', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(3)); });
+    GL::keystrokes.emplace(
+        '5', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(4)); });
+    GL::keystrokes.emplace(
+        '6', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(5)); });
+    GL::keystrokes.emplace(
+        '7', [this]()
+        { TowerSimulation::aircraftManager.infoAirlines(TowerSimulation::aircraftFactory.airlineName(6)); });
 }
 
 void TowerSimulation::display_help() const
