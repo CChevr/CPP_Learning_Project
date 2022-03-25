@@ -17,12 +17,10 @@ protected:
     float z = 0;
 
 public:
-    Displayable(const float z_) : z { z_ } 
-    {
-        GL::display_queue.emplace_back(this);
-    }
+    Displayable(const float z_) : z { z_ } { GL::display_queue.emplace_back(this); }
 
-    virtual ~Displayable() {
+    virtual ~Displayable()
+    {
         auto it = std::find(GL::display_queue.begin(), GL::display_queue.end(), this);
         GL::display_queue.erase(it);
     }
@@ -41,6 +39,5 @@ struct disp_z_cmp
         return (az == bz) ? (a > b) : (az > bz);
     }
 };
-
 
 } // namespace GL
