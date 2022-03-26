@@ -26,7 +26,6 @@ public:
         {
             std::cout << flyNum << " existe déjà" << std::endl;
         }
-        std::cout << GL::move_queue.size() << std::endl;
     }
 
     bool move() override
@@ -39,7 +38,7 @@ public:
         return true;
     }
 
-    void infoAirlines(const std::string& airline) const
+    void infoAirlines(const std::string& airline)
     {
         auto count = std::count_if(_aircrafts.begin(), _aircrafts.end(),
                                    [airline](std::unique_ptr<Aircraft>& aircraft) {
