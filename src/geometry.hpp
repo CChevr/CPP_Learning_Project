@@ -64,7 +64,8 @@ struct Point2D
 
 struct Point3D
 {
-    float values[3] {};
+    // float values[3] {};
+    std::array<float, 3> values;
 
     Point3D() {}
     Point3D(float x, float y, float z) : values { x, y, z } {}
@@ -96,9 +97,7 @@ struct Point3D
 
     Point3D& operator*=(const float scalar)
     {
-        x() *= scalar;
-        y() *= scalar;
-        z() *= scalar;
+        std::for_each(values.begin(), values.end(), [scalar](float& value) { value *= scalar; });
         return *this;
     }
 
