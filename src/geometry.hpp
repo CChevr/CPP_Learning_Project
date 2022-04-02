@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <functional>
 
 struct Point2D
 {
@@ -80,10 +81,8 @@ struct Point3D
     float z() const { return values[2]; }
 
     Point3D& operator+=(const Point3D& other)
-    {
-        x() += other.x();
-        y() += other.y();
-        z() += other.z();
+    {   
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(), [](float c1, float c2){ return c1 + c2; });
         return *this;
     }
 
