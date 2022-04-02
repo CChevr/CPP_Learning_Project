@@ -88,9 +88,7 @@ struct Point3D
 
     Point3D& operator-=(const Point3D& other)
     {
-        x() -= other.x();
-        y() -= other.y();
-        z() -= other.z();
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(), [](float c1, float c2){ return c2 - c1; });
         return *this;
     }
 
