@@ -4,8 +4,9 @@
 #include <array>
 #include <cassert>
 #include <cmath>
-#include <iostream>
 #include <functional>
+#include <iostream>
+#include <numeric>
 
 struct Point2D
 {
@@ -81,14 +82,16 @@ struct Point3D
     float z() const { return values[2]; }
 
     Point3D& operator+=(const Point3D& other)
-    {   
-        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(), [](float c1, float c2){ return c1 + c2; });
+    {
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(),
+                       [](float c1, float c2) { return c1 + c2; });
         return *this;
     }
 
     Point3D& operator-=(const Point3D& other)
     {
-        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(), [](float c1, float c2){ return c2 - c1; });
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(),
+                       [](float c1, float c2) { return c2 - c1; });
         return *this;
     }
 
@@ -121,7 +124,11 @@ struct Point3D
 
     Point3D operator-() const { return Point3D { -x(), -y(), -z() }; }
 
-    float length() const { return std::sqrt(x() * x() + y() * y() + z() * z()); }
+    float length() const
+    {
+        return std::sqrt(std::accumulate(values.begin(), values.end(), 0.f,
+                                         [](float acc, float c) { return acc + (c * c); }));
+    }
 
     float distance_to(const Point3D& other) const { return (*this - other).length(); }
 
