@@ -1,7 +1,7 @@
 #include "aircraft.hpp"
 
-#include "GL/opengl_interface.hpp"
 #include "GL/displayable.hpp"
+#include "GL/opengl_interface.hpp"
 
 #include <cmath>
 
@@ -91,12 +91,18 @@ void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
 
 bool Aircraft::move()
 {
+
+    if (!has_terminal())
+    {
+        waypoints = control.reserve_terminal(*this);
+    }
     if (waypoints.empty())
     {
         waypoints = control.get_instructions(*this);
-        if (waypoints.empty() && !is_on_ground()) {
-            return false;
-        }
+    }
+    if (waypoints.empty() && !is_on_ground())
+    {
+        return false;
     }
 
     if (!is_at_terminal)
@@ -147,4 +153,15 @@ bool Aircraft::move()
 void Aircraft::display() const
 {
     type.texture.draw(project_2D(pos), { PLANE_TEXTURE_DIM, PLANE_TEXTURE_DIM }, get_speed_octant());
+}
+
+bool Aircraft::has_terminal() const
+{
+    std::cout << waypoints.back().is_at_terminal() << std::endl;
+    return waypoints.back().is_at_terminal();
+}
+
+bool Aircraft::is_circling() const
+{
+    return !has_terminal();
 }
