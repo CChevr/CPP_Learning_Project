@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <string>
 #include <string_view>
-#include <rand>
+#include <cstdlib>
 
 class Aircraft : public GL::Displayable, public GL::DynamicObject
 {
