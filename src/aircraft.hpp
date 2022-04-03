@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <string>
 #include <string_view>
+#include <rand>
 
 class Aircraft : public GL::Displayable, public GL::DynamicObject
 {
@@ -21,6 +22,7 @@ private:
     Tower& control;
     bool landing_gear_deployed = false; // is the landing gear deployed?
     bool is_at_terminal        = false;
+    size_t fuel;
 
     // turn the aircraft to arrive at the next waypoint
     // try to facilitate reaching the waypoint after the next by facing the
@@ -56,6 +58,7 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
+        fuel = (std::rand()%2850) + 150;
     }
 
     const std::string& get_flight_num() const { return flight_number; }

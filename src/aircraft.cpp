@@ -91,6 +91,9 @@ void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
 
 bool Aircraft::move()
 {
+    if(0 == fuel) {
+        return false;
+    }
 
     if (!has_terminal())
     {
@@ -123,6 +126,7 @@ bool Aircraft::move()
                 operate_landing_gear();
             }
             waypoints.pop_front();
+            fuel--;
         }
 
         if (is_on_ground())
