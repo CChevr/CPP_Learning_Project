@@ -91,23 +91,35 @@ void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
 
 bool Aircraft::move()
 {
-    if(0 == fuel) {
+    // Out of gas
+    if (0 == fuel)
+    {
         return false;
     }
 
-    if (!has_terminal())
+    // Searching for terminal
+    if (!waypoints.empty() && !has_terminal())
     {
-        waypoints = control.reserve_terminal(*this);
+        auto newWaypoints = control.reserve_terminal(*this);
+        if (!newWaypoints.empty())
+        {
+            waypoints = std::move(newWaypoints);
+        }
     }
-    if (waypoints.empty())
+
+    // Circling
+    else if (waypoints.empty())
     {
         waypoints = control.get_instructions(*this);
     }
+
+    // Finished
     if (waypoints.empty() && !is_on_ground())
     {
         return false;
     }
 
+    // Mouvement
     if (!is_at_terminal)
     {
         turn_to_waypoint();
@@ -161,7 +173,6 @@ void Aircraft::display() const
 
 bool Aircraft::has_terminal() const
 {
-    std::cout << waypoints.back().is_at_terminal() << std::endl;
     return waypoints.back().is_at_terminal();
 }
 
