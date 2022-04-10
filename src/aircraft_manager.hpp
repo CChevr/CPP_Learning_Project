@@ -30,6 +30,9 @@ public:
 
     bool move() override
     {
+        std::sort(_aircrafts.begin(), _aircrafts.end(),
+                  [](std::unique_ptr<Aircraft> a, std::unique_ptr<Aircraft> b) { return a.get() < b.get(); });
+
         _aircrafts.erase(std::remove_if(_aircrafts.begin(), _aircrafts.end(),
                                         [](std::unique_ptr<Aircraft>& aircraft)
                                         { return !aircraft->move(); }),
@@ -46,6 +49,11 @@ public:
                                    });
 
         std::cout << airline << " : " << count << std::endl;
+
+        for (auto it = _aircrafts.begin(); it != _aircrafts.end(); ++it)
+        {
+            std::cout << (*it)->has_terminal() << " - " << (*it)->getFuel() << std::endl;
+        }
     }
 
 private:

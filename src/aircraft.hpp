@@ -8,9 +8,9 @@
 #include "waypoint.hpp"
 
 #include <algorithm>
+#include <cstdlib>
 #include <string>
 #include <string_view>
-#include <cstdlib>
 
 class Aircraft : public GL::Displayable, public GL::DynamicObject
 {
@@ -58,7 +58,7 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
-        fuel = (std::rand()%2850) + 150;
+        fuel = (std::rand() % 2850) + 150;
     }
 
     const std::string& get_flight_num() const { return flight_number; }
@@ -70,6 +70,17 @@ public:
     bool has_terminal() const;
 
     bool is_circling() const;
+
+    bool operator<(const Aircraft& other) const
+    {
+        if (has_terminal() != other.has_terminal())
+        {
+            return has_terminal();
+        }
+        return fuel < other.fuel;
+    }
+
+    size_t getFuel() { return fuel; }
 
     friend class Tower;
 };
