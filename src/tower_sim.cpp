@@ -33,7 +33,7 @@ TowerSimulation::~TowerSimulation()
 }
 
 void TowerSimulation::create_random_aircraft()
-{
+{   
     auto aircraft = TowerSimulation::aircraftFactory.create_random_aircraft(TowerSimulation::airport);
     TowerSimulation::aircraftManager.add(std::move(aircraft));
 }
@@ -88,8 +88,8 @@ void TowerSimulation::display_help() const
 void TowerSimulation::init_airport()
 {
     airport =
-        new Airport { one_lane_airport, Point3D { 0, 0, 0 },
-                      new img::Image { one_lane_airport_sprite_path.get_full_path() }, aircraftManager };
+        new Airport { one_lane_airport, aircraftManager, Point3D { 0, 0, 0 },
+                      new img::Image { one_lane_airport_sprite_path.get_full_path() } };
 
     GL::display_queue.emplace_back(airport);
     GL::move_queue.emplace(airport);

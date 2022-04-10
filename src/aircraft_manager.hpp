@@ -17,7 +17,7 @@ public:
 
     void add(std::unique_ptr<Aircraft> aircraft)
     {
-        auto flyNum = aircraft.get()->get_flight_num();
+        auto flyNum = aircraft->get_flight_num();
         if (_flyNums.find(flyNum) == _flyNums.end())
         {
             _aircrafts.emplace_back(std::move(aircraft));

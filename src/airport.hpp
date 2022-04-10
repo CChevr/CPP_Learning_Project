@@ -56,15 +56,15 @@ private:
     Terminal& get_terminal(const size_t terminal_num) { return terminals.at(terminal_num); }
 
 public:
-    Airport(const AirportType& type_, const Point3D& pos_, const img::Image* image,
-            const AircraftManager& aircraftManager, const float z_ = 1.0f) :
+    Airport(const AirportType& type_, const AircraftManager& aircraftManager_, const Point3D& pos_, const img::Image* image,
+            const float z_ = 1.0f) :
         GL::Displayable { z_ },
         type { type_ },
+        aircraftManager { aircraftManager_ },
         pos { pos_ },
         texture { image },
         terminals { type.create_terminals() },
-        tower { *this },
-        aircraftManager { aircraftManager }
+        tower { *this }
     {}
 
     Tower& get_tower() { return tower; }

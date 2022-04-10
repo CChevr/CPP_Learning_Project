@@ -110,7 +110,7 @@ bool Aircraft::move()
     }
 
     // Circling
-    else if (waypoints.empty())
+    if (waypoints.empty())
     {
         waypoints = control.get_instructions(*this);
     }
