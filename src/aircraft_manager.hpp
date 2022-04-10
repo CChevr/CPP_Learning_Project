@@ -31,7 +31,8 @@ public:
     bool move() override
     {
         std::sort(_aircrafts.begin(), _aircrafts.end(),
-                  [](std::unique_ptr<Aircraft> a, std::unique_ptr<Aircraft> b) { return a.get() < b.get(); });
+                  [](const std::unique_ptr<Aircraft>& a, const std::unique_ptr<Aircraft>& b)
+                  { return ((*a.get()) < (*b.get())); });
 
         _aircrafts.erase(std::remove_if(_aircrafts.begin(), _aircrafts.end(),
                                         [](std::unique_ptr<Aircraft>& aircraft)
