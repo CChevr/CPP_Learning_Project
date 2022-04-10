@@ -50,11 +50,6 @@ public:
                                    });
 
         std::cout << airline << " : " << count << std::endl;
-
-        for (auto it = _aircrafts.begin(); it != _aircrafts.end(); ++it)
-        {
-            std::cout << (*it)->has_terminal() << " - " << (*it)->getFuel() << std::endl;
-        }
     }
 
 private:

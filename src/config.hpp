@@ -21,11 +21,13 @@ constexpr unsigned char NUM_AIRCRAFT_TILES = 8;
 // size of the plane-sprite on screen
 constexpr float PLANE_TEXTURE_DIM = 0.2f;
 // default number of ticks per second
-constexpr unsigned int DEFAULT_TICKS_PER_SEC = 16u; //16u
+constexpr unsigned int DEFAULT_TICKS_PER_SEC = 16u; // 16u
 // default zoom factor
 constexpr float DEFAULT_ZOOM = 2.0f;
 // default window dimensions
 constexpr size_t DEFAULT_WINDOW_WIDTH  = 800;
 constexpr size_t DEFAULT_WINDOW_HEIGHT = 600;
+// default low fuel level
+constexpr size_t LOW_FUEL = 200;
 
 using AircraftCrash = std::runtime_error;

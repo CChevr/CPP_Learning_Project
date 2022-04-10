@@ -80,7 +80,7 @@ public:
         return fuel < other.fuel;
     }
 
-    size_t getFuel() { return fuel; }
+    bool is_low_on_fuel() const;
 
     friend class Tower;
 };

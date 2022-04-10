@@ -91,8 +91,6 @@ void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
 
 bool Aircraft::move()
 {
-    // std::cout << "Fuel " << flight_number << " " << fuel << std::endl;
-
     // Out of gas
     if (0 == fuel)
     {
@@ -187,4 +185,9 @@ bool Aircraft::has_terminal() const
 bool Aircraft::is_circling() const
 {
     return !has_terminal();
+}
+
+bool Aircraft::is_low_on_fuel() const
+{
+    return fuel < LOW_FUEL;
 }
