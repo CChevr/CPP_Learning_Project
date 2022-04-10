@@ -29,5 +29,6 @@ constexpr size_t DEFAULT_WINDOW_WIDTH  = 800;
 constexpr size_t DEFAULT_WINDOW_HEIGHT = 600;
 // default low fuel level
 constexpr size_t LOW_FUEL = 200;
+constexpr size_t MAX_FUEL = 3000;
 
 using AircraftCrash = std::runtime_error;

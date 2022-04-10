@@ -3,6 +3,7 @@
 #include "GL/displayable.hpp"
 #include "GL/dynamic_object.hpp"
 #include "GL/texture.hpp"
+#include "aircraft_manager.hpp"
 #include "airport_type.hpp"
 #include "geometry.hpp"
 #include "img/image.hpp"
@@ -16,8 +17,12 @@ class Airport : public GL::Displayable, public GL::DynamicObject
 {
 private:
     const AirportType& type;
+    const AircraftManager& aircraftManager;
     const Point3D pos;
     const GL::Texture2D texture;
+    size_t fuel_stock       = 0;
+    size_t ordered_fuel     = 0;
+    size_t next_refill_time = 0;
     std::vector<Terminal> terminals;
     Tower tower;
 
@@ -51,13 +56,15 @@ private:
     Terminal& get_terminal(const size_t terminal_num) { return terminals.at(terminal_num); }
 
 public:
-    Airport(const AirportType& type_, const Point3D& pos_, const img::Image* image, const float z_ = 1.0f) :
+    Airport(const AirportType& type_, const Point3D& pos_, const img::Image* image,
+            const AircraftManager& aircraftManager, const float z_ = 1.0f) :
         GL::Displayable { z_ },
         type { type_ },
         pos { pos_ },
         texture { image },
         terminals { type.create_terminals() },
-        tower { *this }
+        tower { *this },
+        aircraftManager { aircraftManager }
     {}
 
     Tower& get_tower() { return tower; }

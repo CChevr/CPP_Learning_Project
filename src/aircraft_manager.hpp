@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <numeric>
 #include <set>
 #include <string>
 #include <vector>
@@ -50,6 +51,15 @@ public:
                                    });
 
         std::cout << airline << " : " << count << std::endl;
+    }
+
+    int get_required_fuel() const
+    {
+        return std::accumulate(_aircrafts.begin(), _aircrafts.end(), (size_t)0,
+                               [](size_t sum, const std::unique_ptr<Aircraft>& a) {
+                                   return (a->is_low_on_fuel() && !a->has_served()) ? sum + a->get_fuel()
+                                                                                    : sum;
+                               });
     }
 
 private:

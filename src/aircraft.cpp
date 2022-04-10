@@ -50,6 +50,7 @@ void Aircraft::arrive_at_terminal()
     // we arrived at a terminal, so start servicing
     control.arrived_at_terminal(*this);
     is_at_terminal = true;
+    serviced       = true;
 }
 
 // deploy and retract landing gear depending on next waypoints
@@ -99,7 +100,7 @@ bool Aircraft::move()
     }
 
     // Searching for terminal
-    if (!waypoints.empty() && !has_terminal())
+    if (!serviced && !has_terminal())
     {
         auto newWaypoints = control.reserve_terminal(*this);
         if (!newWaypoints.empty())

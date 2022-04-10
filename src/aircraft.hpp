@@ -22,6 +22,7 @@ private:
     Tower& control;
     bool landing_gear_deployed = false; // is the landing gear deployed?
     bool is_at_terminal        = false;
+    bool serviced              = false; // already serviced
     size_t fuel;
 
     // turn the aircraft to arrive at the next waypoint
@@ -70,6 +71,10 @@ public:
     bool has_terminal() const;
 
     bool is_circling() const;
+
+    bool has_served() const { return serviced; }
+
+    size_t get_fuel() const { return fuel; }
 
     bool operator<(const Aircraft& other) const
     {
