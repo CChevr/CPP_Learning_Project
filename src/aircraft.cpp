@@ -127,7 +127,6 @@ bool Aircraft::move()
         turn_to_waypoint();
         // move in the direction of the current speed
         pos += speed;
-        fuel--;
 
         // if we are close to our next waypoint, stike if off the list
         if (!waypoints.empty() && distance_to(waypoints.front()) < DISTANCE_THRESHOLD)
@@ -153,6 +152,9 @@ bool Aircraft::move()
         }
         else
         {
+            // fuel consumption
+            fuel--;
+
             // if we are in the air, but too slow, then we will sink!
             const float speed_len = speed.length();
             if (speed_len < SPEED_THRESHOLD)
@@ -193,9 +195,10 @@ bool Aircraft::is_low_on_fuel() const
     return fuel < LOW_FUEL;
 }
 
-void Aircraft::refill(size_t& fuel_stock) {
+void Aircraft::refill(size_t& fuel_stock)
+{
     auto quantity = std::min(fuel_stock, MAX_FUEL - fuel);
     fuel += quantity;
     fuel_stock -= quantity;
-    std::cout << flight_number << " refills " << quantity << std::endl;   
+    std::cout << flight_number << " refills " << quantity << std::endl;
 }
