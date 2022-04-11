@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+using AircraftCrash = class std::runtime_error;
+
 class AircraftManager : public GL::DynamicObject
 {
 public:
@@ -36,8 +38,18 @@ public:
                   { return ((*a.get()) < (*b.get())); });
 
         _aircrafts.erase(std::remove_if(_aircrafts.begin(), _aircrafts.end(),
-                                        [](std::unique_ptr<Aircraft>& aircraft)
-                                        { return !aircraft->move(); }),
+                                        [this](std::unique_ptr<Aircraft>& aircraft)
+                                        {
+                                            try
+                                            {
+                                                return !aircraft->move();
+                                            } catch (const AircraftCrash& err)
+                                            {
+                                                _crash++;
+                                                std::cerr << err.what() << std::endl;
+                                                return true;
+                                            }
+                                        }),
                          _aircrafts.end());
 
         return true;
@@ -62,7 +74,10 @@ public:
                                });
     }
 
+    size_t nb_crash() const { return _crash; }
+
 private:
     std::vector<std::unique_ptr<Aircraft>> _aircrafts;
     std::set<std::string> _flyNums;
+    size_t _crash = 0;
 };

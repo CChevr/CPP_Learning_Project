@@ -9,18 +9,12 @@
 class Terminal : public GL::DynamicObject
 {
 private:
-    unsigned int service_progress    = SERVICE_CYCLES;
-    Aircraft* current_aircraft = nullptr;
+    unsigned int service_progress = SERVICE_CYCLES;
+    Aircraft* current_aircraft    = nullptr;
     const Point3D pos;
 
     Terminal(const Terminal&) = delete;
     Terminal& operator=(const Terminal&) = delete;
-
-    void refill_aircraft_if_needed(size_t *fuel_stock) const {
-        if(current_aircraft->is_low_on_fuel()) {
-            current_aircraft->refill(fuel_stock);
-        }
-    }
 
 public:
     Terminal(const Point3D& pos_) : pos { pos_ } {}
@@ -54,5 +48,11 @@ public:
         return true;
     }
 
-
+    void refill_aircraft_if_needed(size_t* fuel_stock) const
+    {
+        if (NULL != current_aircraft && current_aircraft->is_low_on_fuel())
+        {
+            current_aircraft->refill(fuel_stock);
+        }
+    }
 };

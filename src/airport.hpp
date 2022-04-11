@@ -89,7 +89,7 @@ public:
         for (auto& t : terminals)
         {
             t.move();
-            t.
+            t.refill_aircraft_if_needed(&fuel_stock);
         }
 
         return true;
