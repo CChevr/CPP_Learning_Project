@@ -95,8 +95,8 @@ bool Aircraft::move()
     // Out of gas
     if (0 == fuel)
     {
-        std::cout << "CRASH - " << flight_number << " out of fuel" << std::endl;
-        return false;
+        using namespace std::string_literals;
+        throw AircraftCrash { flight_number + " crashed into the ground"s };
     }
 
     // Searching for terminal
@@ -195,9 +195,10 @@ bool Aircraft::is_low_on_fuel() const
     return fuel < LOW_FUEL;
 }
 
-void Aircraft::refill(size_t *fuel_stock) {
+void Aircraft::refill(size_t* fuel_stock)
+{
     auto quantity = std::min(*fuel_stock, MAX_FUEL - fuel);
     fuel += quantity;
     *fuel_stock -= quantity;
-    std::cout << flight_number << " refills " << quantity << std::endl;   
+    std::cout << flight_number << " refills " << quantity << std::endl;
 }
