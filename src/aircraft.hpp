@@ -87,7 +87,7 @@ public:
 
     bool is_low_on_fuel() const;
 
-    void refill(size_t& fuel_stock);
+    void refill(size_t *fuel_stock);
 
     friend class Tower;
 };
