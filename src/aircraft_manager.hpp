@@ -53,7 +53,7 @@ public:
         std::cout << airline << " : " << count << std::endl;
     }
 
-    int get_required_fuel() const
+    size_t get_required_fuel() const
     {
         return std::accumulate(_aircrafts.begin(), _aircrafts.end(), (size_t)0,
                                [](size_t sum, const std::unique_ptr<Aircraft>& a) {

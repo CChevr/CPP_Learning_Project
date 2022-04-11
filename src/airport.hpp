@@ -11,6 +11,7 @@
 #include "terminal.hpp"
 #include "tower.hpp"
 
+#include <algorithm>
 #include <vector>
 
 class Airport : public GL::Displayable, public GL::DynamicObject
@@ -56,8 +57,8 @@ private:
     Terminal& get_terminal(const size_t terminal_num) { return terminals.at(terminal_num); }
 
 public:
-    Airport(const AirportType& type_, const AircraftManager& aircraftManager_, const Point3D& pos_, const img::Image* image,
-            const float z_ = 1.0f) :
+    Airport(const AirportType& type_, const AircraftManager& aircraftManager_, const Point3D& pos_,
+            const img::Image* image, const float z_ = 1.0f) :
         GL::Displayable { z_ },
         type { type_ },
         aircraftManager { aircraftManager_ },
@@ -73,9 +74,22 @@ public:
 
     bool move() override
     {
+        if (next_refill_time == 0)
+        {
+            ordered_fuel = std::min(aircraftManager.get_required_fuel(), FUELTRUCK_CAPACITY);
+            fuel_stock += ordered_fuel;
+            next_refill_time = REFILL_TIME;
+            std::cout << "Ordered fuel : " << ordered_fuel << "\nFuel stock : " << fuel_stock << std::endl;
+        }
+        else
+        {
+            next_refill_time--;
+        }
+
         for (auto& t : terminals)
         {
             t.move();
+            t.
         }
 
         return true;
