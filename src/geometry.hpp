@@ -7,6 +7,7 @@
 #include <functional>
 #include <iostream>
 #include <numeric>
+#include <vector>
 
 struct Point2D
 {
@@ -154,6 +155,30 @@ struct Point3D
             *this *= (max_len / current_len);
         }
 
+        return *this;
+    }
+};
+
+template <typename... T> struct Point
+{
+private:
+    std::vector<T...> _values {};
+
+public:
+    Point() {}
+    Point(T... args) { _values.emplace_back(args...); }
+
+    Point& operator+=(const Point& other)
+    {
+        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+                       [](float c1, float c2) { return c1 + c2; });
+        return *this;
+    }
+
+    Point& operator-=(const Point& other)
+    {
+        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+                       [](float c1, float c2) { return c2 - c1; });
         return *this;
     }
 };

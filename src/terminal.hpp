@@ -50,7 +50,7 @@ public:
 
     void refill_aircraft_if_needed(size_t* fuel_stock) const
     {
-        if (NULL != current_aircraft && current_aircraft->is_low_on_fuel())
+        if (nullptr != current_aircraft && current_aircraft->is_low_on_fuel())
         {
             current_aircraft->refill(fuel_stock);
         }

@@ -35,7 +35,7 @@ public:
     void init_aircraft_types()
     {
         // executed once
-        assert(aircraft_types[0] == NULL && aircraft_types[1] == NULL && aircraft_types[2] == NULL);
+        assert(aircraft_types[0] == nullptr && aircraft_types[1] == nullptr && aircraft_types[2] == nullptr);
 
         aircraft_types[0] = new AircraftType { .02f, .05f, .02f, MediaPath { "l1011_48px.png" } };
         aircraft_types[1] = new AircraftType { .02f, .05f, .02f, MediaPath { "b707_jat.png" } };
