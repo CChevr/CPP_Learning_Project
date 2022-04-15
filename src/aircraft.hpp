@@ -59,7 +59,7 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
-        fuel = (std::rand() % 2850) + 150;
+        fuel = (std::rand() % (MAX_FUEL - 150)) + 150;
     }
 
     const std::string& get_flight_num() const { return flight_number; }
@@ -87,7 +87,7 @@ public:
 
     bool is_low_on_fuel() const;
 
-    void refill(size_t *fuel_stock);
+    void refill(size_t* fuel_stock);
 
     friend class Tower;
 };

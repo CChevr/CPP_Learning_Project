@@ -50,7 +50,6 @@ void Aircraft::arrive_at_terminal()
     // we arrived at a terminal, so start servicing
     control.arrived_at_terminal(*this);
     is_at_terminal = true;
-    serviced       = true;
 }
 
 // deploy and retract landing gear depending on next waypoints
@@ -100,7 +99,7 @@ bool Aircraft::move()
     }
 
     // Searching for terminal
-    if (!serviced && !has_terminal())
+    if (is_circling())
     {
         auto newWaypoints = control.reserve_terminal(*this);
         if (!newWaypoints.empty())
@@ -191,7 +190,7 @@ bool Aircraft::has_terminal() const
 
 bool Aircraft::is_circling() const
 {
-    return !has_terminal();
+    return (!serviced && !has_terminal());
 }
 
 bool Aircraft::is_low_on_fuel() const

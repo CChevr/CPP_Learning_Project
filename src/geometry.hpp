@@ -159,8 +159,8 @@ struct Point3D
     }
 };
 
-template <typename T>
-struct Point
+/*
+template <typename T> struct Point
 {
 private:
     std::vector<T> _values {};
@@ -184,15 +184,17 @@ public:
         return *this;
     }
 
-    Point& operator*=(const Point& other) {
+    Point& operator*=(const Point& other)
+    {
         std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
                        [](float c1, float c2) { return c2 * c1; });
         return *this;
     }
 
-    Point& operator*=(const float scalar) {
+    Point& operator*=(const float scalar)
+    {
         std::transform(_values.begin(), _values.end(), _values.begin(), _values.end(),
-            [scalar](float c) { return c*scalar; });
+                       [scalar](float c) { return c * scalar; });
         return *this;
     }
 
@@ -218,18 +220,19 @@ public:
     }
 };
 
-// our 3D-coordinate system will be tied to the airport: the runway is parallel to the x-axis, the z-axis
-// points towards the sky, and y is perpendicular to both thus,
-// {1,0,0} --> {.5,.5}   {0,1,0} --> {-.5,.5}   {0,0,1} --> {0,1}
-inline Point2D project_2D(const Point3D& p)
-{
-    return { .5f * p.x() - .5f * p.y(), .5f * p.x() + .5f * p.y() + p.z() };
-}
-
 inline void test_generic_points() {
     Point<int> p1;
     Point<int> p2;
     auto p3 = p1 + p2;
     p1 += p2;
     p1 *= 3; // ou 3.f, ou 3.0 en fonction du type de Point
+}
+*/
+
+// our 3D-coordinate system will be tied to the airport: the runway is parallel to the x-axis, the z-axis
+// points towards the sky, and y is perpendicular to both thus,
+// {1,0,0} --> {.5,.5}   {0,1,0} --> {-.5,.5}   {0,0,1} --> {0,1}
+inline Point2D project_2D(const Point3D& p)
+{
+    return { .5f * p.x() - .5f * p.y(), .5f * p.x() + .5f * p.y() + p.z() };
 }
