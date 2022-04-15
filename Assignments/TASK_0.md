@@ -17,7 +17,7 @@ Ajoutez un avion à la simulation et attendez.
 Que est le comportement de l'avion ?
 Quelles informations s'affichent dans la console ?
 
-- Lorsqu'un avion apparaît à l'écran, il tourne autours de l'aéroport jusqu'à pouvoir atterrir. Une fois au sol, il se "gare" au temrinal de l'aéroport, puis repart. Une fois qu'il à dépassé le bord de l'écran, il ne bouge plus.
+- Lorsqu'un avion apparaît à l'écran, il tourne autour de l'aéroport jusqu'à pouvoir atterrir. Une fois au sol, il se "gare" au terminal de l'aéroport, puis repart. Une fois qu'il à dépassé le bord de l'écran, il ne bouge plus.
 
 Un avion alterne entre ces quatres états:
 
@@ -31,7 +31,7 @@ BA8336 lift off
 Ajoutez maintenant quatre avions d'un coup dans la simulation.
 Que fait chacun des avions ?
 
-- les avions tournent autours de la piste pour attendre qu'un terminal soit libre. Une fois qu'il l'est, un des avions atterrit. Ainsi au début du programme, trois avions se posent et vont à leur terminal, tandis que le quatrième reste dans les airs.
+- les avions tournent autour de la piste pour attendre qu'un terminal soit libre. Une fois qu'il l'est, un des avions atterrit. Ainsi, au début du programme, trois avions se posent et vont à leur terminal, tandis que le quatrième reste dans les airs.
 
 ## B- Analyse du code
 
@@ -41,19 +41,19 @@ Pour chacune d'entre elle, expliquez ce qu'elle représente et son rôle dans le
 - aircraft
 
 ```
-Cette classe permet de représenter un avion en particulier. Elle regroupe tous les attributs qui lui sont propres, son états et ses 'fonctionnalitées'.
+Cette classe permet de représenter un avion en particulier. Elle regroupe tous les attributs qui lui sont propres, son état et ses 'fonctionnalitées'.
 ```
 
 - aicraft_types
 
 ```
-Cette classe permet de définir les caractéristiques générales d'un avions en fonction de son type. Par exemple sa vitesse max, son accélération, son apparence.
+Cette classe permet de définir les caractéristiques générales d'un avion en fonction de son type. Par exemple sa vitesse max, son accélération, son apparence.
 ```
 
 - airport
 
 ```
-Cette calsse permet de caractériser un terminal: sa position, son apparence. C'est cette classe qui permet la gestion des terminaux (réservation d'un terminal pour un avion).
+Cette classe permet de caractériser un terminal: sa position, son apparence. C'est cette classe qui permet la gestion des terminaux (réservation d'un terminal pour un avion).
 ```
 
 - airport_type
@@ -65,13 +65,13 @@ Comme pour les avions, il peut exister plusieurs types d'aéroport. Chaque type 
 - config
 
 ```
-recense les paramètres de base du programme, exemple la taille de la fenêtre, le zoom....
+Recense les paramètres de base du programme, exemple la taille de la fenêtre, le zoom....
 ```
 
 - geometry
 
 ```
-contient toutes les formules mathématiques permetant de faire les calculs à partir des deux classes fournies par le programme Point2D et Point3D.
+Contient toutes les formules mathématiques permetant de faire les calculs à partir des deux classes fournies par le programme Point2D et Point3D.
 ```
 
 - main
@@ -83,31 +83,31 @@ Point d'entré du programme. C'est cette classe qui lance la simulation.
 - runway
 
 ```
-représente la piste d'atterrisage, sa longueur et sa position
+Représente la piste d'atterrissage, sa longueur et sa position.
 ```
 
 - terminal
 
 ```
-Cette classe représente les endroits où les avions vont se stationner dans l'aéroport. C'est à cette endroit que les avions viennent faire leur entretien (servicing).
+Cette classe représente les endroits où les avions vont se stationner dans l'aéroport. C'est à cet endroit que les avions viennent faire leur entretien (servicing).
 ```
 
 - tower
 
 ```
-tower permet d'orchestrer toutes les actions des aviosn vis à vis de l'aéroport. C'est cette classe qui fait le chemin de vol que doivent suivre les avions, qui assigne aux avions leur terminal.
+`tower` permet d'orchestrer toutes les actions des avions vis à vis de l'aéroport. C'est cette classe qui fait le chemin de vol que doivent suivre les avions, qui assigne aux avions leur terminal.
 ```
 
 - tower_sim
 
 ```
-Permet de gérer les iteractions avec l'utilisateur, notamment la création des avions, les zoom, le fait de mettre fin à la simulation...
+Permet de gérer les interactions avec l'utilisateur, notamment la création des avions, les zooms, le fait de mettre fin à la simulation...
 ```
 
 - `waypoint`
 
 ```
-définit la position de l'avion dans la simulation, dans les air, au sol au terminal, ainsi que ses coordonnées.
+Définit la position de l'avion dans la simulation, dans les airs, au sol au terminal, ainsi que ses coordonnées.
 ```
 
 Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonctions-membre publiques et expliquez précisément à quoi elles servent.
@@ -151,7 +151,7 @@ Affiche l'avion.
 void move()
 ```
 
-Fait bouger l'avion en fonction de son chemin de vol waypoints.
+Fait bouger l'avion en fonction de son chemin de vol `waypoints`.
 
 - Airport
 
@@ -179,7 +179,7 @@ Faire avancer le cycle des terminaux.
 bool in_use()
 ```
 
-précise si un avion est affecté à ce terminal.
+Précise si un avion est affecté à ce terminal.
 
 ```cpp
 bool is_servicing()
@@ -203,7 +203,7 @@ Initialise l'entretien de l'avion au terminal.
 void finish_service()
 ```
 
-Si l'entretien est terminé, désaffecte l'avion du terminal
+Si l'entretien est terminé, désaffecte l'avion du terminal.
 
 ```cpp
 void move()
@@ -217,15 +217,15 @@ Expliquez les intérêts de ce choix.
 
 Un chemin est une `deque` de `waypoint`.
 L'intérêt du `deque` est ainsi de créer une file. En effet, un avion doit suivre les points en fonction de leur ordre d'ajoute (FIFO).
-La classe waypoint permet ainsi de définir les coordonnées où doit passer l'avion, en plus de préciser si le point est dans les airs, au sol, ou bien au temrinal.
+La classe waypoint permet ainsi de définir les coordonnées où doit passer l'avion, en plus de préciser si le point est dans les airs, au sol, ou bien au terminal.
 
 Aircraft possède une méthode `add_waypoint` permettant d'ajouter un `waypoint` à son itinéraire, toutefois cette fonction n'est pas utilisée dans le code.
 L'itinéraire est mis à jour dans la fonction `move()` de aircraft.
 
-La classe Tower possède la fonction `get_instructions` qui permet de définir l'itinéraire, donc une lsite de `waypoint`, qui doit suivre l'avion.
+La classe Tower possède la fonction `get_instructions` qui permet de définir l'itinéraire, donc une liste de `waypoint`, qui doit suivre l'avion.
 
 airport_type possède une méthode `ait_to_terminal` permettant de créer la liste de waypoint que doit suivre l'avion afin d'atterrir et d'arriver au dépôt.
-Elle possède également la méthode inverse `terminal_to_air`, et d'autres poiur guider l'avion dans l'aéroport.
+Elle possède également la méthode inverse `terminal_to_air`, et d'autres pour guider l'avion dans l'aéroport.
 
 ## C- Bidouillons !
 
@@ -254,10 +254,10 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
    Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
    Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
 
-- Le framerate de l'application est stocké dans la variable `ticks_per_sec` de la classe `GL\opengl_interface.hpp`. Par défaut cette valeur vaut `DEFAULT_TICKS_PER_SEC` définit dans `config.hpp` à 16u.
-- Après avoir ajouter une fonction `change_tps(const int value)` au fichier `GL\opengl_interface.hpp` qui permet d'augmenter la valeur des tp de `value`, et la gestion des touches `a` et `e` dans la fonction `void TowerSimulation::create_keystrokes() const`, on peut désormais respectivement diminuer et augmenter le framerate de l'application (la valeur planchée étant 1).
+- Le framerate de l'application est stocké dans la variable `ticks_per_sec` de la classe `GL\opengl_interface.hpp`. Par défaut, cette valeur vaut `DEFAULT_TICKS_PER_SEC` définit dans `config.hpp` à 16u.
+- Après avoir ajouté une fonction `change_tps(const int value)` au fichier `GL\opengl_interface.hpp` qui permet d'augmenter la valeur des tp de `value`, et la gestion des touches `a` et `e` dans la fonction `void TowerSimulation::create_keystrokes() const`, on peut désormais respectivement diminuer et augmenter le framerate de l'application (la valeur planchée étant 1).
 - Si jamais on tente de mettre le jeu en pause en utilisant le framerate (en le mettant à zéro), alors l'application effectue une division par zéro et plante.
-- Pour mettre le jeu en pause, il est plus judicieux d'empêcher tout mouvement des avions mais aussi des terminaux. Pour se faire, dans le fichier `GL\opengl_interface.hpp` se trouve une fonction `void timer(const int step)`. Cette dernière permet tous les (1000u / ticks_per_sec) de faire bouger les éléments de l'application. Ainsi on peut ajouter un champs boolean `paused` à la classe `GL\opengl_interface.hpp`, et n'effectuer les déplacements que si `paused` vaut `false`. On ajoute également un méthode publique `void opengl_interface::pause()`permettant d'alterner la valeur de `paused` à chaque appel. Enfin, on ajoute à la fonction `void TowerSimulation::create_random_aircraft() const`, la gestion de la touche `p` qui appelle la fonction `void opengl_interface::pause()`.
+- Pour mettre le jeu en pause, il est plus judicieux d'empêcher tout mouvement des avions mais aussi des terminaux. Pour ce faire, dans le fichier `GL\opengl_interface.hpp` se trouve une fonction `void timer(const int step)`. Cette dernière permet tous les (1000u / ticks_per_sec) de faire bouger les éléments de l'application. Ainsi on peut ajouter un champs boolean `paused` à la classe `GL\opengl_interface.hpp`, et n'effectuer les déplacements que si `paused` vaut `false`. On ajoute également un méthode publique `void opengl_interface::pause()`permettant d'alterner la valeur de `paused` à chaque appel. Enfin, on ajoute à la fonction `void TowerSimulation::create_random_aircraft() const`, la gestion de la touche `p` qui appelle la fonction `void opengl_interface::pause()`.
 
 3. Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
 
@@ -272,7 +272,7 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
    A quel endroit de la callstack pourriez-vous le faire à la place ?\
    Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
 
-Dans la fonction `move()` de aircraft, on peut remarque que si `get_instruction` renvoie une liste vide de waypoint, cela signifie alors que l'avion à terminé son service. Il doit donc être supprimé à ce moment là.
+Dans la fonction `move()` de aircraft, on peut remarquer que si `get_instruction` renvoie une liste vide de waypoint, cela signifie alors que l'avion a terminé son service. Il doit donc être supprimé à ce moment là.
 Il n'est pas prudent de procéder à la suppression de l'avion à ce moment là car il sera toujours référencé dans la liste des objets à afficher, à savoir la `display_queue`. Il faut donc supprimer l'avion plus haut dans les appels, c'est à dire dans la fonction `timer()` de `opengl_interface`.
 Pour ce faire, on peut modifier la signature de la fonction move pour qu'elle renvoie un boolean pour indiquer si l'objet doit être maintenu ou non. Ainsi, elle peut renvoyer `false` lorsque l'objet doit être supprimé, et `true` sinon.
 
@@ -282,7 +282,7 @@ Pour ce faire, on peut modifier la signature de la fonction move pour qu'elle re
    Pourquoi n'est-il pas spécialement pertinent d'en faire de même pour `DynamicObject` ?
 
 - Le mieux pour cela est d'ajouter toutes instances de `Displayable` dans `display_queue` lors de leur création (dans le constructeur de displayable entre les accolades).
-- De même, pour les détruire on peut passer par le descturcteur des `Displayable`.
+- De même, pour les détruire on peut passer par le destructeur des `Displayable`.
 - Comme la suppression s'effetue dans la fonction `opengl_interface::timer`, qui iter sur la move_queue. Si on supprime l'élément de la move_queue dans le destructeur des
   `dynamic_object`, alors cela invalidera l'iterator utilisé par `opengl_interface::timer`. Cela provoquera alors une Erreur de segmentation.
 
@@ -298,12 +298,12 @@ Afin d'améliorer le temps de recherche, on peut utiliser plutôt le conteneur m
 
 1. Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
 
-- En mettant la fonction `reserve_terminal` private, aucun autre classe que `Airport` ne peut y avoir accès. En déclatant `Tower` friend de `Airport`, `Tower` a alors accès aux champs privés de cette classe.
+- En mettant la fonction `reserve_terminal` private, aucune autre classe que `Airport` ne peut y avoir accès. En déclarant `Tower` friend de `Airport`, `Tower` a alors accès aux champs privés de cette classe.
 
 2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une const réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
 
-- Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
+- Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction, car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
 
 ## E- Bonus
 
