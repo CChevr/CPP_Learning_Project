@@ -8,6 +8,7 @@
 #include "waypoint.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <cstdlib>
 #include <string>
 #include <string_view>

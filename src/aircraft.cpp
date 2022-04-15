@@ -3,6 +3,7 @@
 #include "GL/displayable.hpp"
 #include "GL/opengl_interface.hpp"
 
+#include <cassert>
 #include <cmath>
 
 void Aircraft::turn_to_waypoint()
@@ -101,6 +102,7 @@ bool Aircraft::move()
     // Searching for terminal
     if (is_circling())
     {
+        assert(!has_terminal() && !serviced);
         auto newWaypoints = control.reserve_terminal(*this);
         if (!newWaypoints.empty())
         {
