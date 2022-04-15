@@ -17,7 +17,7 @@ Ajoutez un avion à la simulation et attendez.
 Que est le comportement de l'avion ?
 Quelles informations s'affichent dans la console ?
 
-- Lorsqu'un avion apparaît à l'écran, il tourne autours de l'aéroport jusqu'à pouvoir atterrir. Une fois au sol, il se "gare", puis repart.
+- Lorsqu'un avion apparaît à l'écran, il tourne autours de l'aéroport jusqu'à pouvoir atterrir. Une fois au sol, il se "gare" au temrinal de l'aéroport, puis repart. Une fois qu'il à dépassé le bord de l'écran, il ne bouge plus.
 
 Un avion alterne entre ces quatres états:
 
@@ -31,7 +31,7 @@ BA8336 lift off
 Ajoutez maintenant quatre avions d'un coup dans la simulation.
 Que fait chacun des avions ?
 
-- les avions tournent autours de la piste pour attendre qu'elle soit libre. Une fois qu'elle l'est, un des avions atterrit. Une fois qu'il à quitté la piste, un autre avion atterit.
+- les avions tournent autours de la piste pour attendre qu'un terminal soit libre. Une fois qu'il l'est, un des avions atterrit. Ainsi au début du programme, trois avions se posent et vont à leur terminal, tandis que le quatrième reste dans les airs.
 
 ## B- Analyse du code
 
@@ -41,43 +41,43 @@ Pour chacune d'entre elle, expliquez ce qu'elle représente et son rôle dans le
 - aircraft
 
 ```
-Cette classe permet de représenter un avion. Elle regroupe tous ses attributs, son états et ses 'fonctionnalitées'.
+Cette classe permet de représenter un avion en particulier. Elle regroupe tous les attributs qui lui sont propres, son états et ses 'fonctionnalitées'.
 ```
 
 - aicraft_types
 
 ```
-Cette classe permet de définir les caractéristiques propres aux types d'avions, tels que se vitesse max, son accélération, son apparence.
+Cette classe permet de définir les caractéristiques générales d'un avions en fonction de son type. Par exemple sa vitesse max, son accélération, son apparence.
 ```
 
 - airport
 
 ```
-Cette calsse permet de caractériser un terminal: sa position, son apparence.
+Cette calsse permet de caractériser un terminal: sa position, son apparence. C'est cette classe qui permet la gestion des terminaux (réservation d'un terminal pour un avion).
 ```
 
 - airport_type
 
 ```
-Comme pour les avions, il peut exister plusieurs types d'aéroport. Chaque type d'aéroport possède des caractéristiques qui lui sont propres comme l'emplacement de stockage, et l'emplacement des pistes de décollage.
+Comme pour les avions, il peut exister plusieurs types d'aéroport. Chaque type d'aéroport possède des caractéristiques qui lui sont propres comme l'emplacement du ou des terminaux, et l'emplacement des pistes de décollage. Cette classe indique alors le chemin que l'avion doit emprunter pour se déplacer dans l'aéroport.
 ```
 
 - config
 
 ```
-recense les paramètres de base du programme, exemple la tailel de la fenêtre, le zoom....
+recense les paramètres de base du programme, exemple la taille de la fenêtre, le zoom....
 ```
 
 - geometry
 
 ```
-contient toutes les formules mathématiques permetant de faire les calculs du programme
+contient toutes les formules mathématiques permetant de faire les calculs à partir des deux classes fournies par le programme Point2D et Point3D.
 ```
 
 - main
 
 ```
-Point d'entré du programme
+Point d'entré du programme. C'est cette classe qui lance la simulation.
 ```
 
 - runway
@@ -89,25 +89,25 @@ représente la piste d'atterrisage, sa longueur et sa position
 - terminal
 
 ```
-
+Cette classe représente les endroits où les avions vont se stationner dans l'aéroport. C'est à cette endroit que les avions viennent faire leur entretien (servicing).
 ```
 
 - tower
 
 ```
-tower permet d'orchestrer lese actions des aviosn vis à vis de l'aéroport
+tower permet d'orchestrer toutes les actions des aviosn vis à vis de l'aéroport. C'est cette classe qui fait le chemin de vol que doivent suivre les avions, qui assigne aux avions leur terminal.
 ```
 
 - tower_sim
 
 ```
-Permet de gérer les iteractions avec l'utilisateur et de gérer la création des avions
+Permet de gérer les iteractions avec l'utilisateur, notamment la création des avions, les zoom, le fait de mettre fin à la simulation...
 ```
 
 - `waypoint`
 
 ```
-définit l'état d'un avion: dans les air, au sol au terminal, ainsi que sa position à l'aide d'un Point3D point à trois coordonnées.
+définit la position de l'avion dans la simulation, dans les air, au sol au terminal, ainsi que ses coordonnées.
 ```
 
 Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonctions-membre publiques et expliquez précisément à quoi elles servent.
@@ -125,31 +125,33 @@ Donne à l'avion aircraft passé en paramètre les instructions pour le déplace
 void arrived_at_terminal(const Aircraft& aircraft);
 ```
 
+Cette fonction permet de s'assurer que l'avion est bien arrivé au terminal afin de commencer son entretien.
+
 - Aircraft
 
 ```cpp
 const std::string& get_flight_num()
 ```
 
-Retourne l'identifiant de l'avion
+Renvoie l'identifiant de l'avion.
 
 ```cpp
 float distance_to(const Point3D& p)
 ```
 
-Donne la distance entre l'avion et le point p
+Donne la distance entre l'avion et le point p.
 
 ```cpp
 void display()
 ```
 
-Affiche l'avion
+Affiche l'avion.
 
 ```cpp
 void move()
 ```
 
-Fait bouger l'avion
+Fait bouger l'avion en fonction de son chemin de vol waypoints.
 
 - Airport
 
@@ -157,19 +159,19 @@ Fait bouger l'avion
 Tower& get_tower()
 ```
 
-retourne la Tower liée à l'aéroport
+retourne la Tower liée à l'aéroport.
 
 ```cpp
 void display()
 ```
 
-Affiche l'aéroport
+Affiche l'aéroport.
 
 ```cpp
 void move()
 ```
 
-Faire avancer le cycle du dépôt des terminaux
+Faire avancer le cycle des terminaux.
 
 - Terminal
 
@@ -177,37 +179,37 @@ Faire avancer le cycle du dépôt des terminaux
 bool in_use()
 ```
 
-précise si un avion est en cours de dépot au terminal
+précise si un avion est affecté à ce terminal.
 
 ```cpp
 bool is_servicing()
 ```
 
-Dit si un avion est en train de servicing
+Dit si un avion est en train cours d'entretien.
 
 ```cpp
 void assign_craft
 ```
 
-Affecte un avion au terminal
+Affecte un avion au terminal.
 
 ```cpp
 void start_service(const Aircraft& aircraft)
 ```
 
-Initialise le dépot de l'avion au terminal
+Initialise l'entretien de l'avion au terminal.
 
 ```cpp
 void finish_service()
 ```
 
-Si le dépot est terminé, désaffecte l'avion du terminal
+Si l'entretien est terminé, désaffecte l'avion du terminal
 
 ```cpp
 void move()
 ```
 
-Fait avancé d'un cycle le dépot
+Fait avancé d'un cran le cycle de l'entretien.
 
 Quelles classes et fonctions sont impliquées dans la génération du chemin d'un avion ?
 Quel conteneur de la librairie standard a été choisi pour représenter le chemin ?
@@ -281,7 +283,7 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 - Le mieux pour cela est d'ajouter toutes instances de `Displayable` dans `display_queue` lors de leur création (dans le constructeur de displayable entre les accolades).
 - De même, pour les détruire on peut passer par le descturcteur des `Displayable`.
 - Comme la suppression s'effetue dans la fonction `opengl_interface::timer`, qui iter sur la move_queue. Sil on supprime l'élément de la move_queue dans le destructeur des
-`dynamic_object`, alors cela invalidera l'iterator utilisé par `opengl_interface::timer`. Cela provoquera alors une Erreur de segmentation.
+  `dynamic_object`, alors cela invalidera l'iterator utilisé par `opengl_interface::timer`. Cela provoquera alors une Erreur de segmentation.
 
 6. La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle.
    Cette information est actuellement enregistrée dans un `std::vector<std::pair<const Aircraft*, size_t>>` (size_t représentant l'indice du terminal).
@@ -292,11 +294,13 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 ## D- Théorie
 
 1. Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
+
 - parce que `Tower` est friend avec Airport, bien que la fonction soit `reserve_terminal` soit private
 
 2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une const réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
-- 
+
+-
 
 ## E- Bonus
 
