@@ -37,9 +37,9 @@ public:
         // executed once
         assert(aircraft_types[0] == nullptr && aircraft_types[1] == nullptr && aircraft_types[2] == nullptr);
 
-        aircraft_types[0] = new AircraftType { .02f, .05f, .02f, MediaPath { "l1011_48px.png" } };
-        aircraft_types[1] = new AircraftType { .02f, .05f, .02f, MediaPath { "b707_jat.png" } };
-        aircraft_types[2] = new AircraftType { .02f, .07f, .02f, MediaPath { "concorde_af.png" } };
+        aircraft_types[0] = new AircraftType { .02f, .05f, .02f, 1, 3000, MediaPath { "l1011_48px.png" } };
+        aircraft_types[1] = new AircraftType { .02f, .05f, .02f, 1, 3000, MediaPath { "b707_jat.png" } };
+        aircraft_types[2] = new AircraftType { .02f, .07f, .02f, 1, 3000, MediaPath { "concorde_af.png" } };
     }
 
     const std::string& airlineName(size_t index) const { return airlines[index]; }

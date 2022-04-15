@@ -182,7 +182,7 @@ void Aircraft::display() const
 
 bool Aircraft::has_terminal() const
 {
-    if (waypoints.empty())
+    if (waypoints.empty() && !is_at_terminal)
     {
         return false;
     }
