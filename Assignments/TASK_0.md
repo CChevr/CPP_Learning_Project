@@ -219,10 +219,13 @@ Un chemin est une `deque` de `waypoint`.
 L'intérêt du `deque` est ainsi de créer une file. En effet, un avion doit suivre les points en fonction de leur ordre d'ajoute (FIFO).
 La classe waypoint permet ainsi de définir les coordonnées où doit passer l'avion, en plus de préciser si le point est dans les airs, au sol, ou bien au temrinal.
 
-Aircraft possède une méthode `add_waypoint` permettant d'ajouter un `waypoint` à son itinéraire
+Aircraft possède une méthode `add_waypoint` permettant d'ajouter un `waypoint` à son itinéraire, toutefois cette fonction n'est pas utilisée dans le code.
+L'itinéraire est mis à jour dans la fonction `move()` de aircraft.
+
+La classe Tower possède la fonction `get_instructions` qui permet de définir l'itinéraire, donc une lsite de `waypoint`, qui doit suivre l'avion.
 
 airport_type possède une méthode `ait_to_terminal` permettant de créer la liste de waypoint que doit suivre l'avion afin d'atterrir et d'arriver au dépôt.
-Elle possède également la méthode inverse `terminal_to_air`.
+Elle possède également la méthode inverse `terminal_to_air`, et d'autres poiur guider l'avion dans l'aéroport.
 
 ## C- Bidouillons !
 
@@ -230,11 +233,11 @@ Elle possède également la méthode inverse `terminal_to_air`.
    Le Concorde est censé pouvoir voler plus vite que les autres avions.
    Modifiez le programme pour tenir compte de cela.
 
-- Ces caractéristiques de l'avions sont définis et gérés par la classe `aircraft_types.hpp`.
+- Ces caractéristiques des avions sont définies par la classe `aircraft_types.hpp`.
   Par exemple
 
 ```cpp
-aircraft_types[0] = new AircraftType { .02f, .05f, .02f, MediaPath { "l1011_48px.png" } }
+aircraft_types[2] = new AircraftType { .02f, .05f, .02f, MediaPath { "concorde_af.png" } };
 ```
 
 Permet de définir un avion. comme expliqué dans le contructeur des avions on peut voir que :
@@ -244,22 +247,22 @@ AircraftType(const float max_ground_speed_, const float max_air_speed_, const fl
                  const MediaPath& sprite, const size_t num_tiles = NUM_AIRCRAFT_TILES) :
 ```
 
-Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond définie la vitesse maximale de l'avion en vol, et la troisième son accélération maximale. Le 4è argument correspond à l'image de l'avion (son sprite), et le dernier à sa taille du sprite. Cette valeur est par défaut à la taille renseignée dans le fichier config.hpp (8).
+Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second définit la vitesse maximale de l'avion en vol, et la troisième son accélération maximale. Le 4e argument correspond à l'image de l'avion (son sprite), et le dernier à sa taille du sprite. Cette valeur est par défaut à la taille renseignée dans le fichier config.hpp (8).
 
 2. Identifiez quelle variable contrôle le framerate de la simulation.
    Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
    Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
    Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
 
-- Le framerate de l'application est stocké dans la variable `ticks_per_sec` de la classe `GL\opengl_interface.hpp`. Par défaut cette valeur vaut `DEFAULT_TICKS_PER_SEC` définie dans `config.hpp` à 16u.
-- Après avoir ajouter une fonction `change_tps(const int value)` au fichier `GL\opengl_interface.hpp` qui permet d'augmenter la valeur des tp de `value`, et la gestion des touches `&` et `"` dans la fonction `void TowerSimulation::create_keystrokes() const`, on peut désormais respectivement diminuer et augmenter le framerate de l'application (la valeur planchée étant 1).
+- Le framerate de l'application est stocké dans la variable `ticks_per_sec` de la classe `GL\opengl_interface.hpp`. Par défaut cette valeur vaut `DEFAULT_TICKS_PER_SEC` définit dans `config.hpp` à 16u.
+- Après avoir ajouter une fonction `change_tps(const int value)` au fichier `GL\opengl_interface.hpp` qui permet d'augmenter la valeur des tp de `value`, et la gestion des touches `a` et `e` dans la fonction `void TowerSimulation::create_keystrokes() const`, on peut désormais respectivement diminuer et augmenter le framerate de l'application (la valeur planchée étant 1).
 - Si jamais on tente de mettre le jeu en pause en utilisant le framerate (en le mettant à zéro), alors l'application effectue une division par zéro et plante.
-- Pour mettre le jeu en pause, il est plus judicieux d'empêcher tout mouvement des aviosn mais aussi des terminaux. Pour se faire on peut remarque dans le fichier `GL\opengl_interface.hpp`, se trouve une fonction `void timer(const int step)`. Cette dernière permet tous les (1000u / ticks_per_sec) de faire bouger les éléments de l'application. Ainsi on peut ajouter un champs boolean `paused` à la classe `GL\opengl_interface.hpp`, et n'effectuer les déplacements que si `paused` vaut `false`. On ajoute également un méthode publique `void opengl_interface::pause()`permettant d'alterner la valeur de `paused` à chaque appel. Enfin, on ajoute à la fonction `void TowerSimulation::create_random_aircraft() const`, la gestion de la touche `p` qui appelle la fonction `void opengl_interface::pause()`.
+- Pour mettre le jeu en pause, il est plus judicieux d'empêcher tout mouvement des avions mais aussi des terminaux. Pour se faire, dans le fichier `GL\opengl_interface.hpp` se trouve une fonction `void timer(const int step)`. Cette dernière permet tous les (1000u / ticks_per_sec) de faire bouger les éléments de l'application. Ainsi on peut ajouter un champs boolean `paused` à la classe `GL\opengl_interface.hpp`, et n'effectuer les déplacements que si `paused` vaut `false`. On ajoute également un méthode publique `void opengl_interface::pause()`permettant d'alterner la valeur de `paused` à chaque appel. Enfin, on ajoute à la fonction `void TowerSimulation::create_random_aircraft() const`, la gestion de la touche `p` qui appelle la fonction `void opengl_interface::pause()`.
 
 3. Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
 
-- On peut remarquer que les avions restent dans le terminal un certan nombre de frame/cycle. Lorsque l'on regarde dans `terminal.hpp`, on remarque que la fonction `move()` ne permet pas de faire avancer le terminal, mais plutôt le cycle de débarquement de l'avion concerné.
-  La valeur de ces cycles est stocké dans la variable `SERVICE_CYCLES` dans le fichier `config.hpp` et vaut par défaut 20u.
+- On peut remarquer que les avions restent dans le terminal un certain nombre de frame par cycle. Lorsque l'on regarde dans `terminal.hpp`, on remarque que la fonction `move()` ne permet pas de faire avancer le terminal, mais plutôt le cycle d'entretien de l'avion concerné.
+  La valeur de ces cycles est stockée dans la variable `SERVICE_CYCLES` dans le fichier `config.hpp` et vaut par défaut 20u.
 
 4. Lorsqu'un avion a décollé, il réattérit peu de temps après.
    Faites en sorte qu'à la place, il soit retiré du programme.\
@@ -269,11 +272,9 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
    A quel endroit de la callstack pourriez-vous le faire à la place ?\
    Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
 
-- tower::get_instruction() 2e else
-- Il doit être supprimé dans la fonction timer de opengl_interface
-- la fonction get_instruction renvoie une deque vide si l'avion doit être supprimé.
-- la fonction move de l'avion renvoie false si l'avion doit être supprimé sinon true
-- la fonction timer supprime tous les objets qui renvoient false durant suite à l'appel de move().
+Dans la fonction `move()` de aircraft, on peut remarque que si `get_instruction` renvoie une liste vide de waypoint, cela signifie alors que l'avion à terminé son service. Il doit donc être supprimé à ce moment là.
+Il n'est pas prudent de procéder à la suppression de l'avion à ce moment là car il sera toujours référencé dans la liste des objets à afficher, à savoir la `display_queue`. Il faut donc supprimer l'avion plus haut dans les appels, c'est à dire dans la fonction `timer()` de `opengl_interface`.
+Pour ce faire, on peut modifier la signature de la fonction move pour qu'elle renvoie un boolean pour indiquer si l'objet doit être maintenu ou non. Ainsi, elle peut renvoyer `false` lorsque l'objet doit être supprimé, et `true` sinon.
 
 5. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
    Il faut également penser à le supprimer de cette liste avant de le détruire.
@@ -282,7 +283,7 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
 
 - Le mieux pour cela est d'ajouter toutes instances de `Displayable` dans `display_queue` lors de leur création (dans le constructeur de displayable entre les accolades).
 - De même, pour les détruire on peut passer par le descturcteur des `Displayable`.
-- Comme la suppression s'effetue dans la fonction `opengl_interface::timer`, qui iter sur la move_queue. Sil on supprime l'élément de la move_queue dans le destructeur des
+- Comme la suppression s'effetue dans la fonction `opengl_interface::timer`, qui iter sur la move_queue. Si on supprime l'élément de la move_queue dans le destructeur des
   `dynamic_object`, alors cela invalidera l'iterator utilisé par `opengl_interface::timer`. Cela provoquera alors une Erreur de segmentation.
 
 6. La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle.
@@ -291,16 +292,18 @@ Le premier paramètre défini la vitesse maximale de l'avion au sol. Le cond dé
    Cela n'est pas grave tant que ce nombre est petit, mais pour préparer l'avenir, on aimerait bien remplacer le vector par un conteneur qui garantira des opérations efficaces, même s'il y a beaucoup de terminaux.\
    Modifiez le code afin d'utiliser un conteneur STL plus adapté. Normalement, à la fin, la fonction `find_craft_and_terminal(const Aicraft&)` ne devrait plus être nécessaire.
 
+Afin d'améliorer le temps de recherche, on peut utiliser plutôt le conteneur map<key, value> avec comme clef l'aircraft, et comme valeur l'indice du terminal. Ainsi en utilisant la méthode find de la STL.
+
 ## D- Théorie
 
 1. Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
 
-- parce que `Tower` est friend avec Airport, bien que la fonction soit `reserve_terminal` soit private
+- En mettant la fonction `reserve_terminal` private, aucun autre classe que `Airport` ne peut y avoir accès. En déclatant `Tower` friend de `Airport`, `Tower` a alors accès aux champs privés de cette classe.
 
 2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une const réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
 
--
+- Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
 
 ## E- Bonus
 
