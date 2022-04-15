@@ -36,10 +36,10 @@ Répondez aux questions suivantes :
 3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces structures ?
 4. Pourquoi n'est-il pas très judicieux d'essayer d'appliquer la même chose pour votre `AircraftManager` ?
 
-5. Actuellement il s'agit de la classe GL/opengl_interface::timer() qui est chargé de ça.
-6. display_queue et move_queue
-7. Pour le supprimer de la display_queue il faut passer par le destructeur de Displayable, et pour le supprimer de move_queue il faut passer par le destructeur de dynamic_object.
-8.
+- Actuellement il s'agit de la classe GL/opengl_interface::timer() qui est chargé de ça.
+- display_queue et move_queue
+- Pour le supprimer de la display_queue il faut passer par le destructeur de Displayable, et pour le supprimer de move_queue il faut passer par le destructeur de dynamic_object.
+- plutôt que les avions héritent de aircraftManager, il serait plus judicieux que les avions appartiennent à aircraftManager. Cela permet alors de supprimer plus simplement sans invalider le conteneur d'avions.
 
 Pour simplifier le problème, vous allez déplacer l'ownership des avions dans la classe `AircraftManager`.
 Vous allez également faire en sorte que ce soit cette classe qui s'occupe de déplacer les avions, et non plus la fonction `timer`.
@@ -86,8 +86,23 @@ La création des avions est faite à partir des composants suivants :
 
 Pour éviter l'usage de variables globales, vous allez créer une classe `AircraftFactory` dont le rôle est de créer des avions.
 
-Définissez cette classe, instanciez-la à l'endroit qui vous paraît le plus approprié, et refactorisez le code pour l'utiliser.
+Définissez cette classe, instanciez-là en tant que membre de `TowerSimulation` et refactorisez-le code pour l'utiliser.
+Vous devriez constater que le programme crashe.
+
+En effet, pour que la factory fonctionne, il faut que le `MediaPath` (avec la fonction `MediaPath::initialize`) et que `glut` (avec la fonction `init_gl()`) aient été initialisés.
+Comme ces appels sont faits depuis le corps du constructeur de `TowerSimulation`, ils sont actuellement exécutés après la construction de la factory.
+Afin de faire en sorte que les appels aient lieu dans le bon ordre, vous allez créer une structure `ContextInitializer` dans le fichier `tower_sim.hpp`.
+Vous lui ajouterez un constructeur dont le rôle sera d'appeler les fonctions d'initialisation de `MediaPath`, `glut` et `srand`.
+
+Vous pouvez maintenant ajoutez un attribut `context_initializer` de type `ContextInitializer` dans la classe `TowerSimulation`.
+A quelle ligne faut-il définir `context_initializer` dans `TowerSimulation` pour s'assurer que le constructeur de `context_initializer` est appelé avant celui de `factory` ?
+
+- Les objets sont initialisés dans l'ordre naturel. Ainsi en mettant le champ contextInitializer avant celui de la factory, alors on s'assure que ce dernier sera initalisé avant.
+
+Refactorisez le restant du code pour utiliser votre factory.
 Vous devriez du coup pouvoir supprimer les variables globales `airlines` et `aircraft_types`.
+
+Essayez de supprimer au maximum les pointeurs nus, et de les remplacer par des types qui permettent d'exprimer clairement l'ownership. N'hésitez pas à demander des conseils à votre chargé de TP ou à vos camarades.
 
 ### B - Conflits
 
