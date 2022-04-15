@@ -97,7 +97,7 @@ Vous lui ajouterez un constructeur dont le rôle sera d'appeler les fonctions d'
 Vous pouvez maintenant ajoutez un attribut `context_initializer` de type `ContextInitializer` dans la classe `TowerSimulation`.
 A quelle ligne faut-il définir `context_initializer` dans `TowerSimulation` pour s'assurer que le constructeur de `context_initializer` est appelé avant celui de `factory` ?
 
-- Les objets sont initialisés dans l'ordre naturel. Ainsi en mettant le champ contextInitializer avant celui de la factory, alors on s'assure que ce dernier sera initalisé avant.
+- Les objets sont initialisés dans l'ordre naturel. Ainsi en mettant le champ contextInitializer avant celui de la factory, alors on s'assure que ce dernier sera initalisé avant. Comme ContextInitializer n'est pas initialisé dans le corp de la fonction et utilise explicitement un constructeur, alors il est initialisé avant le aircraftFactory qui utilise celui par défaut.
 
 Refactorisez le restant du code pour utiliser votre factory.
 Vous devriez du coup pouvoir supprimer les variables globales `airlines` et `aircraft_types`.

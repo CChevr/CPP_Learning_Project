@@ -19,7 +19,7 @@ using namespace std::string_literals;
 
 TowerSimulation::TowerSimulation(int argc, char** argv) :
     help { (argc > 1) && (std::string { argv[1] } == "--help"s || std::string { argv[1] } == "-h"s) },
-    contextInitializer { argc, argv }
+    context_initializer { argc, argv }
 {
     create_keystrokes();
 }
