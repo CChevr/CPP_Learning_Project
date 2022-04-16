@@ -72,7 +72,7 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
-        fuel = (std::rand() % (MAX_FUEL - 150)) + 150;
+        fuel = (std::rand() % (type.fuel_capacity - 150)) + 150;
     }
 
     const std::string& get_flight_num() const { return flight_number; }
@@ -87,7 +87,7 @@ public:
 
     bool has_served() const { return serviced; }
 
-    size_t get_fuel() const { return fuel; }
+    size_t get_required_fuel() const { return type.fuel_capacity - fuel; }
 
     bool operator<(const Aircraft& other) const
     {

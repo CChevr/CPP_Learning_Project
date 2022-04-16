@@ -148,15 +148,16 @@ bool Aircraft::move()
         }
         else
         {
-            // fuel consumption
-            fuel--;
-
             // if we are in the air, but too slow, then we will sink!
             const float speed_len = speed.length();
+
             if (speed_len < SPEED_THRESHOLD)
             {
                 pos.z() -= SINK_FACTOR * (SPEED_THRESHOLD - speed_len);
             }
+
+            // fuel consumption
+            fuel -= ceil((speed_len * (type.consumption * 1.)) / (type.max_air_speed));
         }
 
         // update the z-value of the displayable structure
@@ -173,7 +174,7 @@ void Aircraft::display() const
 
 bool Aircraft::has_terminal() const
 {
-    if (waypoints.empty())
+    if (waypoints.empty() && !is_at_terminal)
     {
         return false;
     }
@@ -188,7 +189,8 @@ bool Aircraft::is_circling() const
 
 bool Aircraft::is_low_on_fuel() const
 {
-    return fuel < LOW_FUEL;
+    auto consumption_time = 10 * DEFAULT_TICKS_PER_SEC;
+    return fuel < (type.consumption * consumption_time);
 }
 
 void Aircraft::refill(size_t* fuel_stock)
