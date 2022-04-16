@@ -26,6 +26,12 @@ for (const auto& wp: control.get_instructions(*this))
 2. Modifiez `Aircraft::add_waypoint` afin que l'évaluation du flag ait lieu à la compilation et non à l'exécution.
    Que devez-vous changer dans l'appel de la fonction pour que le programme compile ?
 
+Pour que la valeur de front soit évaluée à la compilation, et non plus à l'exécution, on peut soit utiliser une `constexpr`, soit un template. Nous allons partir sur cette denière.
+
+Les fonctions template doivent être déclarées dans le fichier header, on doit donc déplacer cette fonction directement dans `aircraft.hpp`.
+
+Pour que la compilation fonctionne, il faut envoyer à la fonction un const bool. De ce fait, lors de l'appel, on peut soit déclarer front comme : `const bool front = true;`, puis appeler la fonction avec : `add_waypoint<front>(wp);`, ou bien appeler la méthode directement avec la valeur que l'on souhaite : `add_waypoint<true>(wp)`.
+
 3. **BONUS** En utilisant [GodBolt](https://godbolt.org/), comparez le code-assembleur généré par les fonctions suivantes:
 <table border="0">
  <tr>

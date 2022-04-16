@@ -6,6 +6,9 @@
 #include <cassert>
 #include <cmath>
 
+constexpr bool FRONT = true;
+constexpr bool FACE  = false;
+
 void Aircraft::turn_to_waypoint()
 {
     if (!waypoints.empty())
@@ -78,18 +81,6 @@ void Aircraft::operate_landing_gear()
     }
 }
 
-void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
-{
-    if (front)
-    {
-        waypoints.push_front(wp);
-    }
-    else
-    {
-        waypoints.push_back(wp);
-    }
-}
-
 bool Aircraft::move()
 {
     // Out of gas
@@ -113,10 +104,10 @@ bool Aircraft::move()
     // Circling
     if (waypoints.empty())
     {
-        auto front = false;
+        const auto front = true;
         for (const auto& wp : control.get_instructions(*this))
         {
-            add_waypoint(wp, front);
+            add_waypoint<front>(wp);
         }
     }
 
