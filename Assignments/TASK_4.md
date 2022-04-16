@@ -30,7 +30,7 @@ Pour que la valeur de front soit évaluée à la compilation, et non plus à l'e
 
 Les fonctions template doivent être déclarées dans le fichier header, on doit donc déplacer cette fonction directement dans `aircraft.hpp`.
 
-Pour que la compilation fonctionne, il faut envoyer à la fonction un const bool. De ce fait, lors de l'appel, on peut soit déclarer front comme : `const bool front = true;`, puis appeler la fonction avec : `add_waypoint<front>(wp);`, ou bien appeler la méthode directement avec la valeur que l'on souhaite : `add_waypoint<true>(wp)`.
+Pour que la compilation fonctionne, il faut envoyer à la fonction un const bool. De ce fait, lors de l'appel, on peut soit déclarer front comme : `const bool front = false;`, puis appeler la fonction avec : `add_waypoint<front>(wp);`, ou bien appeler la méthode directement avec la valeur que l'on souhaite : `add_waypoint<false>(wp)`.
 
 3. **BONUS** En utilisant [GodBolt](https://godbolt.org/), comparez le code-assembleur généré par les fonctions suivantes:
 <table border="0">

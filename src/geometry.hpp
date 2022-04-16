@@ -159,52 +159,48 @@ struct Point3D
     }
 };
 
-/*
-template <typename T> struct Point
+template <typename... T> struct Point
 {
 private:
-    std::vector<T> _values {};
+    std::vector<T...> _values {};
 
 public:
-    Point() {}
-
-    Point(T... args) { (_values.emplace_back(args)...); }
-
-    Point& operator+=(const Point& other)
+    template <typename E> Point& operator+=(const Point<E>& other)
     {
         std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
                        [](float c1, float c2) { return c1 + c2; });
         return *this;
     }
+    /*
 
-    Point& operator-=(const Point& other)
-    {
-        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
-                       [](float c1, float c2) { return c2 - c1; });
-        return *this;
-    }
+        Point& operator-=(const Point& other)
+        {
+            std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+                           [](float c1, float c2) { return c2 - c1; });
+            return *this;
+        }
 
-    Point& operator*=(const Point& other)
-    {
-        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
-                       [](float c1, float c2) { return c2 * c1; });
-        return *this;
-    }
+        Point& operator*=(const Point& other)
+        {
+            std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+                           [](float c1, float c2) { return c2 * c1; });
+            return *this;
+        }
 
-    Point& operator*=(const float scalar)
-    {
-        std::transform(_values.begin(), _values.end(), _values.begin(), _values.end(),
-                       [scalar](float c) { return c * scalar; });
-        return *this;
-    }
-
-    Point operator+(const Point& other) const
+        Point& operator*=(const float scalar)
+        {
+            std::transform(_values.begin(), _values.end(), _values.begin(), _values.end(),
+                           [scalar](float c) { return c * scalar; });
+            return *this;
+        }
+        */
+    template <typename E> Point operator+(const Point<E>& other) const
     {
         Point result = *this;
         result += other;
         return result;
     }
-
+    /*
     Point operator*(const Point& other) const
     {
         Point result = *this;
@@ -218,16 +214,17 @@ public:
         result *= scalar;
         return result;
     }
+    */
 };
 
-inline void test_generic_points() {
+inline void test_generic_points()
+{
     Point<int> p1;
     Point<int> p2;
     auto p3 = p1 + p2;
-    p1 += p2;
-    p1 *= 3; // ou 3.f, ou 3.0 en fonction du type de Point
+    // p1 += p2;
+    // p1 *= 3; // ou 3.f, ou 3.0 en fonction du type de Point
 }
-*/
 
 // our 3D-coordinate system will be tied to the airport: the runway is parallel to the x-axis, the z-axis
 // points towards the sky, and y is perpendicular to both thus,

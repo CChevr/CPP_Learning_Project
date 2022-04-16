@@ -104,7 +104,7 @@ bool Aircraft::move()
     // Circling
     if (waypoints.empty())
     {
-        const auto front = true;
+        const auto front = false;
         for (const auto& wp : control.get_instructions(*this))
         {
             add_waypoint<front>(wp);
