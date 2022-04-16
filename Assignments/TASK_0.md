@@ -240,22 +240,17 @@ Elle possède également la méthode inverse `terminal_to_air`, et d'autres pour
 aircraft_types[2] = new AircraftType { .02f, .05f, .02f, MediaPath { "concorde_af.png" } };
 ```
 
-Permet de définir un avion. comme expliqué dans le contructeur des avions on peut voir que :
+Permet de définir un avion. On peut retrouver la signification des différents paramètres dans le constructueur.
 
 ```cpp
 AircraftType(const float max_ground_speed_, const float max_air_speed_, const float max_accel_,
                  const MediaPath& sprite, const size_t num_tiles = NUM_AIRCRAFT_TILES) :
 ```
 
-2. Identifiez quelle variable contrôle le framerate de la simulation.\
-   Le framerate correspond au temps de rafraichissement du programme, c'est-à-dire le nombre de fois où les éléments du programme seront mis à jour (ajout de nouvel avion à la simulation, déplacement, etc) en une seconde.\
-   Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
-   Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
-   Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
-
 Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second définit la vitesse maximale de l'avion en vol, et la troisième son accélération maximale. Le 4e argument correspond à l'image de l'avion (son sprite), et le dernier à sa taille du sprite. Cette valeur est par défaut à la taille renseignée dans le fichier config.hpp (8).
 
-2. Identifiez quelle variable contrôle le framerate de la simulation.
+2. Identifiez quelle variable contrôle le framerate de la simulation.\
+   Le framerate correspond au temps de rafraichissement du programme, c'est-à-dire le nombre de fois où les éléments du programme seront mis à jour (ajout de nouvel avion à la simulation, déplacement, etc) en une seconde.\
    Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
    Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
    Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
@@ -264,6 +259,11 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
 - Après avoir ajouté une fonction `change_tps(const int value)` au fichier `GL\opengl_interface.hpp` qui permet d'augmenter la valeur des tp de `value`, et la gestion des touches `a` et `e` dans la fonction `void TowerSimulation::create_keystrokes() const`, on peut désormais respectivement diminuer et augmenter le framerate de l'application (la valeur planchée étant 1).
 - Si jamais on tente de mettre le jeu en pause en utilisant le framerate (en le mettant à zéro), alors l'application effectue une division par zéro et plante.
 - Pour mettre le jeu en pause, il est plus judicieux d'empêcher tout mouvement des avions mais aussi des terminaux. Pour ce faire, dans le fichier `GL\opengl_interface.hpp` se trouve une fonction `void timer(const int step)`. Cette dernière permet tous les (1000u / ticks_per_sec) de faire bouger les éléments de l'application. Ainsi on peut ajouter un champs boolean `paused` à la classe `GL\opengl_interface.hpp`, et n'effectuer les déplacements que si `paused` vaut `false`. On ajoute également un méthode publique `void opengl_interface::pause()`permettant d'alterner la valeur de `paused` à chaque appel. Enfin, on ajoute à la fonction `void TowerSimulation::create_random_aircraft() const`, la gestion de la touche `p` qui appelle la fonction `void opengl_interface::pause()`.
+
+3. Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
+
+- On peut remarquer que les avions restent dans le terminal un certain nombre de frame pour un cycle. Lorsque l'on regarde dans `terminal.hpp`, on remarque que la fonction `move()` ne permet pas de faire avancer le terminal, mais plutôt le cycle d'entretien de l'avion concerné.
+  La valeur de ces cycles est stockée dans la variable `SERVICE_CYCLES` dans le fichier `config.hpp` et vaut par défaut 20u.
 
 4. Lorsqu'un avion a décollé, il réattérit peu de temps après.
    Assurez-vous qu'à la place, il soit supprimé de la `move_queue`.\
@@ -274,30 +274,19 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
    A quel endroit de la callstack pourriez-vous le faire à la place ?\
    Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
 
+- Dans la fonction `move()` de aircraft, on peut remarquer que si `get_instruction` renvoie une liste vide de waypoint, cela signifie alors que l'avion a terminé son service. Il doit donc être supprimé à ce moment là.
+  Il n'est pas prudent de procéder à la suppression de l'avion à ce moment là car il sera toujours référencé dans la liste des objets à afficher, à savoir la `display_queue`. Il faut donc supprimer l'avion plus haut dans les appels, c'est à dire dans la fonction `timer()` de `opengl_interface`.
+  Pour ce faire, on peut modifier la signature de la fonction move pour qu'elle renvoie un boolean pour indiquer si l'objet doit être maintenu ou non. Ainsi, elle peut renvoyer `false` lorsque l'objet doit être supprimé, et `true` sinon.
+
 5. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
    Il faut également penser à le supprimer de cette liste avant de le détruire.
    Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.\
    Essayez maintenant de supprimer complètement l'avion du programme lorsque vous le retirez de la `move_queue`.\
    En dézoomant, vous devriez maintenant constater que les avions disparaissent maintenant de l'écran.
 
-3) Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
+- Pour faire cela on peut modifier le constructeur de Displayable pour qu'à la création d'une instance, elle soit placée dans la display_queue. On peut également modifier son destructeur pour qu'à la suppression d'une instance, elle soit supprimée de la display_queue.
 
-- On peut remarquer que les avions restent dans le terminal un certain nombre de frame par cycle. Lorsque l'on regarde dans `terminal.hpp`, on remarque que la fonction `move()` ne permet pas de faire avancer le terminal, mais plutôt le cycle d'entretien de l'avion concerné.
-  La valeur de ces cycles est stockée dans la variable `SERVICE_CYCLES` dans le fichier `config.hpp` et vaut par défaut 20u.
-
-4. Lorsqu'un avion a décollé, il réattérit peu de temps après.
-   Faites en sorte qu'à la place, il soit retiré du programme.\
-   Indices :\
-   A quel endroit pouvez-vous savoir que l'avion doit être supprimé ?\
-   Pourquoi n'est-il pas sûr de procéder au retrait de l'avion dans cette fonction ?
-   A quel endroit de la callstack pourriez-vous le faire à la place ?\
-   Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
-
-Dans la fonction `move()` de aircraft, on peut remarquer que si `get_instruction` renvoie une liste vide de waypoint, cela signifie alors que l'avion a terminé son service. Il doit donc être supprimé à ce moment là.
-Il n'est pas prudent de procéder à la suppression de l'avion à ce moment là car il sera toujours référencé dans la liste des objets à afficher, à savoir la `display_queue`. Il faut donc supprimer l'avion plus haut dans les appels, c'est à dire dans la fonction `timer()` de `opengl_interface`.
-Pour ce faire, on peut modifier la signature de la fonction move pour qu'elle renvoie un boolean pour indiquer si l'objet doit être maintenu ou non. Ainsi, elle peut renvoyer `false` lorsque l'objet doit être supprimé, et `true` sinon.
-
-5. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
+7. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
    Il faut également penser à le supprimer de cette liste avant de le détruire.
    Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.
    Pourquoi n'est-il pas spécialement pertinent d'en faire de même pour `DynamicObject` ?
@@ -324,12 +313,7 @@ Afin d'améliorer le temps de recherche, on peut utiliser plutôt le conteneur m
 2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une const réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
 
-<<<<<<< HEAD
-
-- # Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction, car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
-
-2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference constante ?
-   Pourquoi n'est-il pas possible d'éviter la copie du `Point3D` passé en paramètre ?
+- Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction, car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
 
 ## E- Bonus
 

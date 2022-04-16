@@ -13,6 +13,7 @@ Actuellement, quand un avion s'écrase, une exception de type `AircraftCrash` (q
 
 Pour sécuriser votre code, repassez sur les différentes fonctions de votre programme et ajoutez des assertions permettant de vérifier qu'elles sont correctement utilisées.
 Voici quelques idées :
+
 - fonctions d'initialisation appelées une seule fois
 - état attendu d'un objet lorsqu'une fonction est appelée dessus
 - vérification de certains paramètres de fonctions
