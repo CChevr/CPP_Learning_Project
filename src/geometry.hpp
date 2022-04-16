@@ -162,9 +162,11 @@ struct Point3D
 template <int size, typename Type> struct Point
 {
 
-    std::array<Type, size> _values {};
+    std::array<Type, size> values {};
 
     Point() {}
+    Point(Type x, Type y) : values { x, y } {}
+    Point(Type x, Type y, Type z) : values { x, y, z } {}
 
     /*
     const if(size >= 1)
@@ -182,28 +184,28 @@ template <int size, typename Type> struct Point
 
     Point& operator+=(const Point& other)
     {
-        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(),
                        [](Type c1, Type c2) { return c1 + c2; });
         return *this;
     }
 
     Point& operator-=(const Point& other)
     {
-        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(),
                        [](Type c1, Type c2) { return c2 - c1; });
         return *this;
     }
 
     Point& operator*=(const Point& other)
     {
-        std::transform(other._values.begin(), other._values.end(), _values.begin(), _values.begin(),
+        std::transform(other.values.begin(), other.values.end(), values.begin(), values.begin(),
                        [](Type c1, Type c2) { return c2 * c1; });
         return *this;
     }
 
     Point& operator*=(const Type scalar)
     {
-        std::for_each(_values.begin(), _values.end(), [scalar](Type& c) { return c * scalar; });
+        std::for_each(values.begin(), values.end(), [scalar](Type& c) { return c * scalar; });
         return *this;
     }
 
@@ -231,11 +233,11 @@ template <int size, typename Type> struct Point
 
 inline void test_generic_points()
 {
-    Point<3, int> p1;
-    Point<3, int> p2;
-    // auto p3 = p1 + p2;
+    Point<3, float> p1;
+    Point<3, float> p2;
+    auto p3 = p1 + p2;
     p1 += p2;
-    p1 *= 3; // ou 3.f, ou 3.0 en fonction du type de Point
+    p3 *= 3.f; // ou 3.f, ou 3.0 en fonction du type de Point
 }
 
 // our 3D-coordinate system will be tied to the airport: the runway is parallel to the x-axis, the z-axis
