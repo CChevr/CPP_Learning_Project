@@ -9,6 +9,11 @@
 #include <numeric>
 #include <vector>
 
+template <int size, typename Type> 
+struct Point;
+
+using Point3D = Point<3, float>;
+
 struct Point2D
 {
     float values[2] {};
@@ -64,7 +69,7 @@ struct Point2D
         return result;
     }
 };
-
+/*
 struct Point3D
 {
     // float values[3] {};
@@ -158,6 +163,7 @@ struct Point3D
         return *this;
     }
 };
+*/
 
 template <int size, typename Type> struct Point
 {
@@ -167,20 +173,15 @@ template <int size, typename Type> struct Point
     Point() {}
     Point(Type x, Type y) : values { x, y } {}
     Point(Type x, Type y, Type z) : values { x, y, z } {}
-
-    /*
-    const if(size >= 1)
+    
     float& x() { return values[0]; }
     float x() const { return values[0]; }
 
-    const if(size >= 2)
     float& y() { return values[1]; }
     float y() const { return values[1]; }
 
-    const if(size >= 3)
     float& z() { return values[2]; }
     float z() const { return values[2]; }
-    */
 
     Point& operator+=(const Point& other)
     {
@@ -216,6 +217,18 @@ template <int size, typename Type> struct Point
         return result;
     }
 
+    Point operator-(const Point& other) const{
+        Point result = *this;
+        result -= other;
+        return result;
+    }
+
+    Point operator-() const {
+        Point result = *this;
+        result *= -1;
+        return result;
+    }
+
     Point operator*(const Point& other) const
     {
         Point result = *this;
@@ -228,6 +241,39 @@ template <int size, typename Type> struct Point
         Point result = *this;
         result *= scalar;
         return result;
+    }
+
+    Type length() const
+    {
+        return std::sqrt(std::accumulate(values.begin(), values.end(), static_cast<Type> (0),
+                                         [](Type acc, Type c) { return acc + (c * c); }));
+    }
+
+    Type distance_to(const Point& other) const { return (*this - other).length(); }
+
+    Point& normalize(const Type target_len = static_cast<Type> (1))
+    {
+        const Type current_len = length();
+        if (current_len == 0)
+        {
+            throw std::logic_error("cannot normalize vector of length 0");
+        }
+
+        *this *= (target_len / current_len);
+        return *this;
+    }
+
+    Point& cap_length(const Type max_len)
+    {
+        assert(max_len > 0);
+
+        const Type current_len = length();
+        if (current_len > max_len)
+        {
+            *this *= (max_len / current_len);
+        }
+
+        return *this;
     }
 };
 
