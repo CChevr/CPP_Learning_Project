@@ -198,7 +198,8 @@ bool Aircraft::is_circling() const
 
 bool Aircraft::is_low_on_fuel() const
 {
-    return fuel < LOW_FUEL;
+    auto consumption_time = 10 * DEFAULT_TICKS_PER_SEC;
+    return fuel < (type.consumption * consumption_time);
 }
 
 void Aircraft::refill(size_t* fuel_stock)
