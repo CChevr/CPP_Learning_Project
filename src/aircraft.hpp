@@ -75,6 +75,8 @@ public:
         fuel = (std::rand() % (type.fuel_capacity - 150)) + 150;
     }
 
+    ~Aircraft() { std::cout << "TODO" << std::endl; }
+
     const std::string& get_flight_num() const { return flight_number; }
     float distance_to(const Point3D& p) const { return pos.distance_to(p); }
 

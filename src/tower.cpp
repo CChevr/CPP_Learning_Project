@@ -80,3 +80,9 @@ WaypointQueue Tower::reserve_terminal(Aircraft& aircraft)
     }
     return {};
 }
+
+void Tower::unreserve_terminal(Aircraft& aircraft)
+{
+    if (aircraft.has_terminal())
+    {}
+}
