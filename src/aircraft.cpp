@@ -157,15 +157,16 @@ bool Aircraft::move()
         }
         else
         {
-            // fuel consumption
-            fuel--;
-
             // if we are in the air, but too slow, then we will sink!
             const float speed_len = speed.length();
+
             if (speed_len < SPEED_THRESHOLD)
             {
                 pos.z() -= SINK_FACTOR * (SPEED_THRESHOLD - speed_len);
             }
+
+            // fuel consumption
+            fuel -= ceil((speed_len * (type.consumption * 1.)) / (type.max_air_speed));
         }
 
         // update the z-value of the displayable structure
