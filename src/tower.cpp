@@ -84,5 +84,15 @@ WaypointQueue Tower::reserve_terminal(Aircraft& aircraft)
 void Tower::unreserve_terminal(Aircraft& aircraft)
 {
     if (aircraft.has_terminal())
-    {}
+    {
+        const auto it = reserved_terminals.find(&aircraft);
+        if(it != reserved_terminals.end()) {
+            const auto terminal_num = it->second;
+            Terminal& terminal      = airport.get_terminal(terminal_num);
+            if (!terminal.is_servicing())
+            {
+                terminal.finish_service();
+            }
+        }
+    }
 }
