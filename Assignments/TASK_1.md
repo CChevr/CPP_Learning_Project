@@ -1,11 +1,11 @@
-# Gestion des ressources
+# Gestion mémoire
 
 ## Analyse de la gestion des avions
 
 La création des avions est aujourd'hui gérée par les fonctions `TowerSimulation::create_aircraft` et `TowerSimulation::create_random_aircraft`.
 Chaque avion créé est ensuite placé dans les files `GL::display_queue` et `GL::move_queue`.
 
-Si à un moment quelconque du programme, vous souhaitiez accéder à l'avion ayant le numéro de vol "AF1250", que devriez-vous faire ?
+Imaginez et décrivez ce que vous devriez faire si vous souhaitiez accéder à l'avion ayant le numéro de vol "AF1250".
 
 ---
 
@@ -32,22 +32,20 @@ Il serait donc bon de savoir qui est censé détruire les avions du programme, a
 Répondez aux questions suivantes :
 
 1. Qui est responsable de détruire les avions du programme ? (si vous ne trouvez pas, faites/continuez la question 4 dans TASK_0)
-2. Quelles autres structures contiennent une référence sur un avion au moment où il doit être détruit ?
-3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces structures ?
-4. Pourquoi n'est-il pas très judicieux d'essayer d'appliquer la même chose pour votre `AircraftManager` ?
+2. Quelles sont les listes qui contiennent une référence sur un avion au moment où il doit être détruit ?
+3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces deux structures ?
 
 - Actuellement il s'agit de la classe GL/opengl_interface::timer() qui est chargé de ça.
 - display_queue et move_queue
 - Pour le supprimer de la display_queue il faut passer par le destructeur de Displayable, et pour le supprimer de move_queue il faut passer par le destructeur de dynamic_object.
 - plutôt que les avions héritent de aircraftManager, il serait plus judicieux que les avions appartiennent à aircraftManager. Cela permet alors de supprimer plus simplement sans invalider le conteneur d'avions.
 
-Pour simplifier le problème, vous allez déplacer l'ownership des avions dans la classe `AircraftManager`.
-Vous allez également faire en sorte que ce soit cette classe qui s'occupe de déplacer les avions, et non plus la fonction `timer`.
+Pour simplifier le programme, l'`AircraftManager` aura l'ownership des avions, c'est-à-dire que c'est lui qui s'occupera de les faire disparaître du programme, et non plus la fonction `timer`. Il aura également la responsabilité de les faire bouger.
 
 ### C - C'est parti !
 
 Ajoutez un attribut `aircrafts` dans le gestionnaire d'avions.
-Choisissez un type qui met bien en avant le fait que `AircraftManager` est propriétaire des avions.
+Choisissez un type qui met bien en avant le fait que `AircraftManager` est propriétaire des avions, et vérifiez avec votre chargé de TP qu'il s'agit de la bonne solution.
 
 - Pour montrer que AircraftManager est bien propriétaire des aircraft, on peut définir un vector de unique_ptr de aircraft.
 
@@ -57,6 +55,11 @@ Ajoutez un nouvel attribut `aircraft_manager` dans la classe `TowerSimulation`.
 
 Modifiez ensuite le code afin que `timer` passe forcément par le gestionnaire d'avions pour déplacer les avions.
 Faites le nécessaire pour que le gestionnaire supprime les avions après qu'ils aient décollé.
+La fonction `timer` est implémentée dans la partie GL/ du programme. Celle-ci est complètement indépendente du contenu de l'application, c'est-à-dire qu'elle ne connaît pas les types `Aircraft`, `Airport`, etc.\
+Pour conserver cette indépendence, et que `timer` puisse tout de même demander à l'`AircraftManager` de déplacer les avions, `AircraftManager` devra hériter de `DynamicObject` et être inséré dans la `move_queue`.\
+Implémentez ensuite `AircraftManager::move` afin que qu'il déplace les avions et supprime ceux qui doivent sortir du programme.\
+N'oubliez pas de retirer les ajouts d'avions à la `move_queue`, sinon, ceux-ci seront déplacés et supprimés 2 fois (et par l'`AircraftManager`, et par `timer`).\
+Vous pouvez maintenant supprimer la relation d'héritage entre `Aircraft` et `DynamicObject`, puisse que le seul intérêt à être un `DynamicObject`, c'est de pouvoir être placé dans la `move_queue` pour être mis à jour par `timer`.
 
 - Pour cela, il faut dans un premier temps que la classe aircraft_manager étende la classe dynamic_object.
   Ainsi lorsque aircraft_manager est créé, il peut être ajouté à la `GL::move_queue`.
@@ -133,7 +136,10 @@ On pourrait néanmoins avoir différents `AircraftType` qui utilisent les mêmes
 Ils seraient donc chargés plusieurs fois depuis le disque pour rien.
 
 Pour rendre le programme un peu plus performant, implémentez une classe `TexturePool` qui s'occupe de charger, stocker et fournir les textures.
-Réfléchissez bien au type que vous allez utiliser pour référencer les textures, afin d'exprimer correctement l'ownership.
+Pour exprimer correctement ce type d'ownership, vous devez utiliser le smart-pointer `std::shared_ptr`.
+
+Commencez par aller sur la documentation de `std::shared_ptr`.
+Pouvez-vous expliquer comment le compilateur arrive à déterminer à quel moment l'objet n'a plus aucun owner, afin de le détruire ?
 
 Listez les classes qui ont besoin de `TexturePool`.
 Sachant que vous n'aurez qu'une seule instance de `TexturePool` dans votre programme, quelle classe devra assumer l'ownership de cet objet ?\

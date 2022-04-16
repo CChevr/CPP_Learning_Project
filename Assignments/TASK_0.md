@@ -247,6 +247,12 @@ AircraftType(const float max_ground_speed_, const float max_air_speed_, const fl
                  const MediaPath& sprite, const size_t num_tiles = NUM_AIRCRAFT_TILES) :
 ```
 
+2. Identifiez quelle variable contrôle le framerate de la simulation.\
+   Le framerate correspond au temps de rafraichissement du programme, c'est-à-dire le nombre de fois où les éléments du programme seront mis à jour (ajout de nouvel avion à la simulation, déplacement, etc) en une seconde.\
+   Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
+   Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
+   Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
+
 Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second définit la vitesse maximale de l'avion en vol, et la troisième son accélération maximale. Le 4e argument correspond à l'image de l'avion (son sprite), et le dernier à sa taille du sprite. Cette valeur est par défaut à la taille renseignée dans le fichier config.hpp (8).
 
 2. Identifiez quelle variable contrôle le framerate de la simulation.
@@ -259,7 +265,22 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
 - Si jamais on tente de mettre le jeu en pause en utilisant le framerate (en le mettant à zéro), alors l'application effectue une division par zéro et plante.
 - Pour mettre le jeu en pause, il est plus judicieux d'empêcher tout mouvement des avions mais aussi des terminaux. Pour ce faire, dans le fichier `GL\opengl_interface.hpp` se trouve une fonction `void timer(const int step)`. Cette dernière permet tous les (1000u / ticks_per_sec) de faire bouger les éléments de l'application. Ainsi on peut ajouter un champs boolean `paused` à la classe `GL\opengl_interface.hpp`, et n'effectuer les déplacements que si `paused` vaut `false`. On ajoute également un méthode publique `void opengl_interface::pause()`permettant d'alterner la valeur de `paused` à chaque appel. Enfin, on ajoute à la fonction `void TowerSimulation::create_random_aircraft() const`, la gestion de la touche `p` qui appelle la fonction `void opengl_interface::pause()`.
 
-3. Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
+4. Lorsqu'un avion a décollé, il réattérit peu de temps après.
+   Assurez-vous qu'à la place, il soit supprimé de la `move_queue`.\
+   Pour tester, il suffit de dézoomer et de vérifier que les avions suffisament éloignés ne bougent plus.
+   Indices :\
+   A quel endroit pouvez-vous savoir que l'avion doit être supprimé ?\
+   Pourquoi n'est-il pas sûr de procéder au retrait de l'avion dans cette fonction ?
+   A quel endroit de la callstack pourriez-vous le faire à la place ?\
+   Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
+
+5. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
+   Il faut également penser à le supprimer de cette liste avant de le détruire.
+   Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.\
+   Essayez maintenant de supprimer complètement l'avion du programme lorsque vous le retirez de la `move_queue`.\
+   En dézoomant, vous devriez maintenant constater que les avions disparaissent maintenant de l'écran.
+
+3) Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
 
 - On peut remarquer que les avions restent dans le terminal un certain nombre de frame par cycle. Lorsque l'on regarde dans `terminal.hpp`, on remarque que la fonction `move()` ne permet pas de faire avancer le terminal, mais plutôt le cycle d'entretien de l'avion concerné.
   La valeur de ces cycles est stockée dans la variable `SERVICE_CYCLES` dans le fichier `config.hpp` et vaut par défaut 20u.
@@ -303,7 +324,12 @@ Afin d'améliorer le temps de recherche, on peut utiliser plutôt le conteneur m
 2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une const réference ?
    Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
 
-- Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction, car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
+<<<<<<< HEAD
+
+- # Dans la fonction turn, on ne peut pas recevoir de `const Point3D&` direction, car ce type n'est pas compatible avec la méthode `cap_length` que l'on applique dessus.
+
+2. En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference constante ?
+   Pourquoi n'est-il pas possible d'éviter la copie du `Point3D` passé en paramètre ?
 
 ## E- Bonus
 
