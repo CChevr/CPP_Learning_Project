@@ -9,11 +9,12 @@
 #include <numeric>
 #include <vector>
 
-template <int size, typename Type> 
-struct Point;
+template <int size, typename Type> struct Point;
 
+using Point2D = Point<2, float>;
 using Point3D = Point<3, float>;
 
+/*
 struct Point2D
 {
     float values[2] {};
@@ -69,7 +70,7 @@ struct Point2D
         return result;
     }
 };
-/*
+
 struct Point3D
 {
     // float values[3] {};
@@ -164,7 +165,6 @@ struct Point3D
     }
 };
 */
-
 template <int size, typename Type> struct Point
 {
 
@@ -173,7 +173,7 @@ template <int size, typename Type> struct Point
     Point() {}
     Point(Type x, Type y) : values { x, y } {}
     Point(Type x, Type y, Type z) : values { x, y, z } {}
-    
+
     float& x() { return values[0]; }
     float x() const { return values[0]; }
 
@@ -206,7 +206,7 @@ template <int size, typename Type> struct Point
 
     Point& operator*=(const Type scalar)
     {
-        std::for_each(values.begin(), values.end(), [scalar](Type& c) { return c * scalar; });
+        std::for_each(values.begin(), values.end(), [scalar](Type& c) { c *= scalar; });
         return *this;
     }
 
@@ -217,13 +217,15 @@ template <int size, typename Type> struct Point
         return result;
     }
 
-    Point operator-(const Point& other) const{
+    Point operator-(const Point& other) const
+    {
         Point result = *this;
         result -= other;
         return result;
     }
 
-    Point operator-() const {
+    Point operator-() const
+    {
         Point result = *this;
         result *= -1;
         return result;
@@ -245,13 +247,13 @@ template <int size, typename Type> struct Point
 
     Type length() const
     {
-        return std::sqrt(std::accumulate(values.begin(), values.end(), static_cast<Type> (0),
+        return std::sqrt(std::accumulate(values.begin(), values.end(), static_cast<Type>(0),
                                          [](Type acc, Type c) { return acc + (c * c); }));
     }
 
     Type distance_to(const Point& other) const { return (*this - other).length(); }
 
-    Point& normalize(const Type target_len = static_cast<Type> (1))
+    Point& normalize(const Type target_len = static_cast<Type>(1))
     {
         const Type current_len = length();
         if (current_len == 0)
