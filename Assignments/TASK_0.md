@@ -286,7 +286,7 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
 
 - Pour faire cela on peut modifier le constructeur de Displayable pour qu'à la création d'une instance, elle soit placée dans la display_queue. On peut également modifier son destructeur pour qu'à la suppression d'une instance, elle soit supprimée de la display_queue.
 
-7. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
+6. Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
    Il faut également penser à le supprimer de cette liste avant de le détruire.
    Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.
    Pourquoi n'est-il pas spécialement pertinent d'en faire de même pour `DynamicObject` ?
@@ -296,13 +296,12 @@ Le premier paramètre définit la vitesse maximale de l'avion au sol. Le second 
 - Comme la suppression s'effetue dans la fonction `opengl_interface::timer`, qui iter sur la move_queue. Si on supprime l'élément de la move_queue dans le destructeur des
   `dynamic_object`, alors cela invalidera l'iterator utilisé par `opengl_interface::timer`. Cela provoquera alors une Erreur de segmentation.
 
-6. La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle.
-   Cette information est actuellement enregistrée dans un `std::vector<std::pair<const Aircraft*, size_t>>` (size_t représentant l'indice du terminal).
+7. La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle. Cette information est actuellement enregistrée dans un `std::vector<std::pair<const Aircraft*, size_t>>` (size_t représentant l'indice du terminal).
    Cela fait que la recherche du terminal associé à un avion est réalisée en temps linéaire, par rapport au nombre total de terminaux.
    Cela n'est pas grave tant que ce nombre est petit, mais pour préparer l'avenir, on aimerait bien remplacer le vector par un conteneur qui garantira des opérations efficaces, même s'il y a beaucoup de terminaux.\
-   Modifiez le code afin d'utiliser un conteneur STL plus adapté. Normalement, à la fin, la fonction `find_craft_and_terminal(const Aicraft&)` ne devrait plus être nécessaire.
+    Modifiez le code afin d'utiliser un conteneur STL plus adapté. Normalement, à la fin, la fonction `find_craft_and_terminal(const Aicraft&)` ne devrait plus être nécessaire.
 
-Afin d'améliorer le temps de recherche, on peut utiliser plutôt le conteneur map<key, value> avec comme clef l'aircraft, et comme valeur l'indice du terminal. Ainsi en utilisant la méthode find de la STL.
+- Afin d'améliorer le temps de recherche, on peut utiliser plutôt le conteneur map<key, value> avec comme clef l'aircraft, et comme valeur l'indice du terminal. Ainsi en utilisant la méthode find de la STL.
 
 ## D- Théorie
 
