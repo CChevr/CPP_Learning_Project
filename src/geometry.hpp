@@ -283,6 +283,8 @@ inline void test_generic_points()
 {
     Point<3, float> p1;
     Point<3, float> p2;
+    // Point2D p { 3.f, 4.f };
+    Point3D p { 3.f, 2.f };
     auto p3 = p1 + p2;
     p1 += p2;
     p3 *= 3.f; // ou 3.f, ou 3.0 en fonction du type de Point
