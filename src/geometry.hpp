@@ -10,7 +10,7 @@
 #include <type_traits>
 #include <vector>
 
-template <int size, typename Type> struct Point;
+template <size_t size, typename Type> struct Point;
 
 using Point2D = Point<2, float>;
 using Point3D = Point<3, float>;
@@ -166,7 +166,7 @@ struct Point3D
     }
 };
 */
-template <int size, typename Type> struct Point
+template <size_t size, typename Type> struct Point
 {
 
     std::array<Type, size> values {};
