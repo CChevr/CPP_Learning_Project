@@ -4,6 +4,9 @@
 
 - Pour l'ajout automatique des avions dans la Diplay_queue, il était possible de mettre la commande dans le cosntructeur des aircrafts, ou bien dans celui des Displayable. Il est tout de même plus logique d'ajouter à la liste des objets à afficher lors de leur création, plutot qu'à la cration d'un type spécifique.
 
+- Le fait de donner la gestion des aircraft à une nouvelle classe permet de ne pas être en contradictiona avec le principe de single responsability. En effet, chaque classe présente dans le programme possède déjà son rôle clairement défini. Ajouter la gestion des aircrafts à l'une d'entre elles rendrait son rôle plus confus ou moins logique.
+- De plus, ajouter une nouvelle classe ayant la charge des avions permet à n'importe qu'elle autre classe d'en posséder une référence, de pouvoir interagir avec simplement.
+
 2. Les situations où vous avez bloqué, et si applicable, la solution que vous avez trouvé pour vous en sortir.
    Au cours de ce projet, il y a eu de nombres situations où j'ai été bloqué, notamment les suivantes:
 
