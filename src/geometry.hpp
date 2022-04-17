@@ -7,6 +7,7 @@
 #include <functional>
 #include <iostream>
 #include <numeric>
+#include <type_traits>
 #include <vector>
 
 template <int size, typename Type> struct Point;
@@ -171,17 +172,41 @@ template <int size, typename Type> struct Point
     std::array<Type, size> values {};
 
     Point() {}
-    Point(Type x, Type y) : values { x, y } {}
+    Point(Type x, Type y) : values { x, y } { static_assert(size == 2); }
     Point(Type x, Type y, Type z) : values { x, y, z } {}
 
-    float& x() { return values[0]; }
-    float x() const { return values[0]; }
+    float& x()
+    {
+        static_assert(size >= 1);
+        return values[0];
+    }
+    float x() const
+    {
+        static_assert(size >= 1);
+        return values[0];
+    }
 
-    float& y() { return values[1]; }
-    float y() const { return values[1]; }
+    float& y()
+    {
+        static_assert(size >= 2);
+        return values[1];
+    }
+    float y() const
+    {
+        static_assert(size >= 2);
+        return values[1];
+    }
 
-    float& z() { return values[2]; }
-    float z() const { return values[2]; }
+    float& z()
+    {
+        static_assert(size >= 3);
+        return values[2];
+    }
+    float z() const
+    {
+        static_assert(size >= 3);
+        return values[2];
+    }
 
     Point& operator+=(const Point& other)
     {
@@ -283,8 +308,9 @@ inline void test_generic_points()
 {
     Point<3, float> p1;
     Point<3, float> p2;
-    // Point2D p { 3.f, 4.f };
-    Point3D p { 3.f, 2.f };
+    Point2D p { 3.f, 4.f };
+    // Point3D p { 3.f, 2.f, 4.f };
+    // std::cout << p.z() << std::endl;
     auto p3 = p1 + p2;
     p1 += p2;
     p3 *= 3.f; // ou 3.f, ou 3.0 en fonction du type de Point
